@@ -4,5 +4,18 @@ export default {
 	theme: {
 		extend: {},
 	},
+	daisyui: {
+		themes: [
+			{
+				defaultTheme: {
+					primary: "#2db875",
+					secondary: "#f3a1a0",
+					accent: "#3a4a6a",
+					neutral: "#f0f4f8",
+					"base-100": "#ffffff",
+				},
+			},
+		],
+	},
 	plugins: [require("daisyui")],
 };
