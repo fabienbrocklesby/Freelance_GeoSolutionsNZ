@@ -1,4 +1,11 @@
-<section id="contact" class="bg-gray-100 py-16 px-4">
+<section
+	id="contact"
+	class="bg-gray-100 py-16 px-4"
+	data-aos="fade-in"
+	data-aos-duration="750"
+	data-aos-delay="250"
+	data-aos-once="true"
+>
 	<div
 		class="max-w-7xl sm:mx-auto bg-white rounded-xl shadow-lg p-8 space-y-12"
 	>
@@ -26,18 +33,20 @@
 				</iframe>
 			</div>
 		</div>
-		<form class="space-y-6">
+		<form id="contactForm" class="space-y-6">
 			<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 				<input
 					type="text"
 					placeholder="Your Name"
 					class="input input-bordered w-full"
+					name="Name"
 					required
 				/>
 				<input
 					type="email"
 					placeholder="Your Email"
 					class="input input-bordered w-full"
+					name="FromEmail"
 					required
 				/>
 			</div>
@@ -45,20 +54,33 @@
 				type="text"
 				placeholder="Subject"
 				class="input input-bordered w-full"
+				name="Subject"
 				required
 			/>
 			<textarea
 				placeholder="Your Message"
 				class="textarea textarea-bordered w-full"
 				rows="5"
+				name="Message"
 				required></textarea>
 			<div class="text-center">
 				<button
 					type="submit"
 					class="btn btn-primary text-white px-12 w-full sm:w-auto"
-					>Send Message</button
+					><span
+						id="loadingSpinner"
+						class="loading loading-spinner loading-md hidden"></span>Send
+					Message</button
 				>
+				<p id="successMessage" class="pt-4 text-success hidden">
+					Email sent successfully, we will be in touch soon.
+				</p>
+				<p id="errorMessage" class="pt-4 text-error hidden">
+					An error occurred, plese check the form provided.
+				</p>
 			</div>
 		</form>
 	</div>
+
+	<script is:inline src="/js/contact.js"></script>
 </section>
