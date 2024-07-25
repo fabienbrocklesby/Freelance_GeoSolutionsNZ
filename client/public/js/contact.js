@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const loading = document.getElementById("loadingSpinner");
 	const successMessage = document.getElementById("successMessage");
 	const errorMessage = document.getElementById("errorMessage");
+	const apiUrl = window.apiUrl;
 
 	form.addEventListener("submit", function (event) {
 		event.preventDefault();
@@ -22,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			data: data,
 		};
 
-		fetch("http://localhost:1337/api/emails", {
+		fetch(`${apiUrl}/api/emails`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

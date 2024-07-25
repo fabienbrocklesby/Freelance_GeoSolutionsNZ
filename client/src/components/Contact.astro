@@ -1,3 +1,7 @@
+---
+const apiUrl = import.meta.env.API_URL;
+---
+
 <section
 	id="contact"
 	class="bg-gray-100 py-16 px-4"
@@ -15,8 +19,12 @@
 			<div class="w-full lg:w-1/4">
 				<h2 class="text-4xl font-bold mb-4">Contact Us</h2>
 				<p class="text-lg mb-4">
-					Mobile: 027 898 6000 <br />
-					<a href="mailto:admin@geosolutions.nz" class="text-blue-600"
+					Mobile: <a href="tel:+64278986000" class="text-blue-600"
+						>027 898 6000</a
+					>
+					<br />
+					<a href="
+						mailto:admin@geosolutions.nz" class="text-blue-600"
 						>admin@geosolutions.nz</a
 					><br />
 					<a href="mailto:sally@geosolutions.nz" class="text-blue-600"
@@ -81,6 +89,10 @@
 			</div>
 		</form>
 	</div>
+
+	<script define:vars={{ apiUrl }}>
+		window.apiUrl = apiUrl;
+	</script>
 
 	<script is:inline src="/js/contact.js"></script>
 </section>
