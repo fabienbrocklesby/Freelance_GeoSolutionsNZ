@@ -18,28 +18,30 @@ const documents = data.map((document) => {
 ---
 
 <Layout title="publications">
-	<div class="flex justify-center">
-		<ul class="w-full max-w-4xl space-y-4 px-4">
-			{
-				documents.map((document) => (
-					<li class="card bg-base-100 shadow-lg border border-neutral rounded-lg">
-						<a href={`/publications/${document.id}`} class="no-underline">
-							<div class="card-body p-6">
-								<h2 class="text-2xl font-semibold text-primary mb-2">
-									{document.title}
-								</h2>
-								<p class="text-gray-600">{document.description}</p>
-								<a
-									href={apiUrl + document.fileUrl}
-									class="btn btn-primary mt-4"
-								>
-									Download
-								</a>
-							</div>
-						</a>
-					</li>
-				))
-			}
-		</ul>
-	</div>
+	<section id="team">
+		<div class="flex justify-center">
+			<ul class="w-full max-w-4xl space-y-4 px-4">
+				{
+					documents.map((document) => (
+						<li class="card bg-base-100 shadow-lg border border-neutral rounded-lg">
+							<a href={`/publications/${document.id}`} class="no-underline">
+								<div class="card-body p-6">
+									<h2 class="text-2xl font-semibold text-primary mb-2">
+										{document.title}
+									</h2>
+									<p class="text-gray-600">{document.description}</p>
+									<a
+										href={apiUrl + document.fileUrl}
+										class="btn btn-primary text-white mt-4"
+									>
+										Download
+									</a>
+								</div>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
 </Layout>
