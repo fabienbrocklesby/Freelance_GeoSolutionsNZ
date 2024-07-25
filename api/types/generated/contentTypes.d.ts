@@ -863,6 +863,7 @@ export interface ApiTeamTeam extends Schema.CollectionType {
     singularName: 'team';
     pluralName: 'teams';
     displayName: 'Team';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -871,6 +872,7 @@ export interface ApiTeamTeam extends Schema.CollectionType {
     name: Attribute.String;
     role: Attribute.String;
     image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    email: Attribute.Email;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

@@ -1,40 +1,4 @@
 ---
-// const teamMembers = [
-// 	{
-// 		name: "Sally Hargraves",
-// 		role: "Professional Engineering Geologist",
-// 		image: "/images/team/Sally.jpg",
-// 	},
-// 	{
-// 		name: "Mark Gray",
-// 		role: "Senior Engineering Geologist",
-// 		email: "mark@geosolutions.co.nz",
-// 		image: "/images/team/Mark.jpeg",
-// 	},
-// 	{
-// 		name: "Sam Buckner",
-// 		role: "Engineering Geologist",
-// 		email: "sam@geosolutions.nz",
-// 		image: "assets/img/employee3.png",
-// 	},
-// 	{
-// 		name: "Jordan Lindbom",
-// 		role: "Graduate Engineering Geologist",
-// 		email: "jordan@geosolutions.nz",
-// 		image: "assets/img/profile pic 2.jpg",
-// 	},
-// 	{
-// 		name: "Jarrod Hammond",
-// 		role: "Project Support",
-// 		image: "assets/img/Jarrod headshot.jpg",
-// 	},
-// 	{
-// 		name: "Danielle Martin",
-// 		role: "Administrative Support",
-// 		image: "assets/img/Danielle Headshot.JPG",
-// 	},
-// ];
-
 const apiUrl = import.meta.env.API_URL;
 const response = await fetch(`${apiUrl}/api/teams?populate=image`);
 const { data } = await response.json();
@@ -43,6 +7,7 @@ const teamMembers = data.map((project) => ({
 	id: project.id,
 	name: project.attributes.name,
 	role: project.attributes.role,
+	email: project.attributes.email,
 	image: project.attributes.image.data.attributes.url,
 }));
 ---
@@ -51,11 +16,13 @@ const teamMembers = data.map((project) => ({
 	id="team"
 	class="py-16 flex flex-col items-center px-8 md:px-12 lg:px-20 xl:px-40"
 >
-	<h2 class="text-3xl font-bold text-center mb-8">Team Members</h2>
+	<h2 class="text-3xl font-semibold text-center mb-8 text-gray-600">
+		Team Members
+	</h2>
 	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 		{
 			teamMembers.map((member) => (
-				<div class="card bg-base-100 w-full shadow-xl">
+				<div class="card bg-base-100 w-full shadow-xl hover:scale-105 transition-transform duration-300">
 					<figure>
 						<img src={apiUrl + member.image} alt="Shoes" />
 					</figure>
@@ -63,7 +30,11 @@ const teamMembers = data.map((project) => ({
 					<div class="card-body">
 						<h3 class="card-title">{member.name}</h3>
 						<p>{member.role}</p>
-						{member.email && <p class="text-sm">{member.email}</p>}
+						{member.email && (
+							<a href={`mailto:` + member.email}>
+								<p class="text-sm hover:text-primary">{member.email}</p>
+							</a>
+						)}
 					</div>
 				</div>
 			))
