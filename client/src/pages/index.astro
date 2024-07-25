@@ -5,6 +5,7 @@ import Hero from "../components/Hero.astro";
 import About from "../components/About.astro";
 import Services from "../components/Services.astro";
 import Team from "../components/Team.astro";
+import Contact from "../components/Contact.astro";
 ---
 
 <Layout title="GeoSolutions">
@@ -16,25 +17,17 @@ import Team from "../components/Team.astro";
 
 	<Team />
 
-	<!-- Contact Section -->
-	<section id="contact" class="py-16 bg-base-200 text-center">
-		<h2 class="text-3xl font-bold mb-8">Contact Us</h2>
-		<p class="text-lg">
-			Mobile: 027 898 6000 <br />
-			admin@geosolutions.nz<br />
-			sally@geosolutions.nz
-		</p>
-	</section>
-</Layout>
+	<Contact />
 
-<!-- Footer -->
-<footer class="footer footer-center p-10 bg-base-200 text-base-content">
-	<div>
-		<p class="font-bold">GeoSolutions</p>
-		<p>
-			Our focus is on the private sector market in the communities in and around
-			the top of the South Island, New Zealand. (Nelson Tasman)
-		</p>
-		<p>Copyright © 2022 - All rights reserved</p>
-	</div>
-</footer>
+	<!-- Footer -->
+	<footer class="footer footer-center p-10 bg-base-200 text-base-content">
+		<div>
+			<p class="font-bold">GeoSolutions</p>
+			<p>
+				Our focus is on the private sector market in the communities in and
+				around the top of the South Island, New Zealand. (Nelson Tasman)
+			</p>
+			<p>Copyright © 2022 - All rights reserved</p>
+		</div>
+	</footer>
+</Layout>
