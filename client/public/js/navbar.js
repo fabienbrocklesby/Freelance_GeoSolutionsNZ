@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (currentSectionId === "hero") {
 			addHighlight(homeLink);
 		} else if (
-			currentSectionId === "aboutus" ||
+			currentSectionId === "about" ||
 			currentSectionId === "services" ||
 			currentSectionId === "projects"
 		) {
@@ -57,4 +57,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	window.addEventListener("scroll", logVisibleSection);
 	logVisibleSection();
+
+	const dropdownItems = document.querySelectorAll(".dropdown-content li a");
+	const mobileMenu = document.getElementById("mobile-menu");
+
+	function closeAllDropdowns() {
+		const allDetails = document.querySelectorAll("details");
+		allDetails.forEach((detail) => {
+			if (detail.open) detail.open = false;
+		});
+	}
+
+	dropdownItems.forEach((item) => {
+		item.addEventListener("click", () => {
+			closeAllDropdowns();
+		});
+	});
+
+	document.addEventListener("click", (event) => {
+		if (!mobileMenu.contains(event.target)) {
+			closeAllDropdowns();
+		}
+	});
 });
