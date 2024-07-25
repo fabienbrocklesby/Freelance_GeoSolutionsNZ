@@ -1,0 +1,43 @@
+---
+const services = [
+	"Site and soil investigations",
+	"Landslip damage assessment and remediation",
+	"Subdivision geotechnical assessments (urban and rural)",
+	"Liquefaction assessment",
+	"Establishment of fault location",
+	"Earthworks design, supervision & certification",
+	"Natural disaster insurance assessment",
+	"Geotechnical peer review services and expert opinions",
+	"On-site wastewater disposal suitability assessment",
+	"Geotechnical site certification",
+];
+---
+
+<section id="services" class="py-16 bg-gray-100 text-gray-700">
+	<div class="flex flex-col justify-center text-center max-w-4xl mx-auto px-4">
+		<h2 class="text-3xl text-center mb-8">Our Services</h2>
+		<p class="text-lg mb-8">
+			GeoSolutions provides specialist geotechnical services to assist you with
+			your building project. You may need to provide a Geotech report to
+			accompany your application for resource consent for a subdivision or would
+			like a foundation assessment for a new cellphone tower. We will help you
+			establish an appropriate and cost-effective investigation for your project
+			and then walk you through the process through to consent application. We
+			usually need to double check the plans before application, may need to
+			answer questions during the consent application and will almost certainly
+			need to check the ground conditions during construction.
+		</p>
+		<ul
+			class="pl-6 bg-white mx-auto p-8 rounded-xl shadow-xl hover:scale-105 transition-transform duration-500"
+		>
+			{
+				services.map((service) => (
+					<li class="mb-2">
+						<span class="font-extrabold">-</span>
+						{service}
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

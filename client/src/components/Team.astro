@@ -1,0 +1,60 @@
+---
+const teamMembers = [
+	{
+		name: "Sally Hargraves",
+		role: "Professional Engineering Geologist",
+		image: "/images/team/Sally.jpg",
+	},
+	{
+		name: "Mark Gray",
+		role: "Senior Engineering Geologist",
+		email: "mark@geosolutions.co.nz",
+		image: "/images/team/Mark.jpeg",
+	},
+	{
+		name: "Sam Buckner",
+		role: "Engineering Geologist",
+		email: "sam@geosolutions.nz",
+		image: "assets/img/employee3.png",
+	},
+	{
+		name: "Jordan Lindbom",
+		role: "Graduate Engineering Geologist",
+		email: "jordan@geosolutions.nz",
+		image: "assets/img/profile pic 2.jpg",
+	},
+	{
+		name: "Jarrod Hammond",
+		role: "Project Support",
+		image: "assets/img/Jarrod headshot.jpg",
+	},
+	{
+		name: "Danielle Martin",
+		role: "Administrative Support",
+		image: "assets/img/Danielle Headshot.JPG",
+	},
+];
+---
+
+<section
+	id="team"
+	class="py-16 flex flex-col items-center px-8 md:px-12 lg:px-20 xl:px-40"
+>
+	<h2 class="text-3xl font-bold text-center mb-8">Team Members</h2>
+	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+		{
+			teamMembers.map((member) => (
+				<div class="card bg-base-100 w-full shadow-xl">
+					<figure>
+						<img src={member.image} alt="Shoes" />
+					</figure>
+					<div class="card-body">
+						<h3 class="card-title">{member.name}</h3>
+						<p>{member.role}</p>
+						{member.email && <p class="text-sm">{member.email}</p>}
+					</div>
+				</div>
+			))
+		}
+	</div>
+</section>

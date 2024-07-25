@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			});
 		}
 
-		if (currentSectionId === "home") {
+		if (currentSectionId === "hero") {
 			addHighlight(homeLink);
 		} else if (
 			currentSectionId === "aboutus" ||
