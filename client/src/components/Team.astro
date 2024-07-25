@@ -1,5 +1,6 @@
 ---
-const apiUrl = import.meta.env.API_URL;
+const apiUrl = import.meta.env.PUBLIC_API_URL;
+const imageUrl = import.meta.env.PUBLIC_IMAGE_URL;
 const response = await fetch(`${apiUrl}/api/teams?populate=image`);
 const { data } = await response.json();
 
@@ -27,7 +28,7 @@ const teamMembers = data.map((project) => ({
 			teamMembers.map((member) => (
 				<div class="card bg-base-100 w-full shadow-xl hover:scale-105 transition-transform duration-300">
 					<figure>
-						<img src={apiUrl + member.image} alt="Shoes" />
+						<img src={imageUrl + member.image} alt="Shoes" />
 					</figure>
 
 					<div class="card-body">

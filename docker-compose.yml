@@ -33,6 +33,7 @@ services:
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
       APP_KEYS: ${APP_KEYS}
       NODE_ENV: ${NODE_ENV}
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
     volumes:
       - ./api/config:/opt/app/config
       - ./api/src:/opt/app/src
@@ -50,6 +51,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+    env_file: .env
     environment:
       HOST: 0.0.0.0
       PORT: 4321

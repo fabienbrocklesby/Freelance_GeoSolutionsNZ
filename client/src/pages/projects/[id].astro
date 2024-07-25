@@ -2,7 +2,8 @@
 import Layout from "../../layouts/DefaultLayout.astro";
 
 const { id } = Astro.params;
-const apiUrl = import.meta.env.API_URL;
+const apiUrl = import.meta.env.PUBLIC_API_URL;
+const imageUrl = import.meta.env.PUBLIC_IMAGE_URL;
 const response = await fetch(
 	`${apiUrl}/api/projects/${id}?populate=thumbnail,beforePhoto,afterPhoto`
 );
@@ -23,7 +24,7 @@ const { attributes: project } = data;
 
 				<div class="bg-base-100 shadow-xl rounded-lg overflow-hidden mb-8">
 					<img
-						src={apiUrl + project.thumbnail.data.attributes.url}
+						src={imageUrl + project.thumbnail.data.attributes.url}
 						alt={project.title}
 						class="w-full h-auto object-cover"
 					/>
@@ -44,7 +45,7 @@ const { attributes: project } = data;
 						<div class="flex-1">
 							<div class="rounded-lg overflow-hidden mb-2">
 								<img
-									src={apiUrl + project.beforePhoto.data.attributes.url}
+									src={imageUrl + project.beforePhoto.data.attributes.url}
 									alt="Before"
 									class="w-full h-64 object-cover"
 								/>
@@ -54,7 +55,7 @@ const { attributes: project } = data;
 						<div class="flex-1">
 							<div class="rounded-lg overflow-hidden mb-2">
 								<img
-									src={apiUrl + project.afterPhoto.data.attributes.url}
+									src={imageUrl + project.afterPhoto.data.attributes.url}
 									alt="After"
 									class="w-full h-64 object-cover"
 								/>
