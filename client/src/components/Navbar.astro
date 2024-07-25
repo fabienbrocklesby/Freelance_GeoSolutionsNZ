@@ -1,12 +1,12 @@
 <div
-	class="flex items-center shadow-lg justify-between py-7 px-6 sm:px-10 md:px-12 lg:px-40"
+	class="flex items-center shadow-lg justify-between py-7 px-6 sm:px-8 md:px-12 lg:px-32 xl:px-40"
 >
 	<div id="logo">
 		<a href="/"><img src="/images/logo.webp" class="w-28" alt="logo" /></a>
 	</div>
 
 	<div class="sm:hidden">
-		<details class="dropdown dropdown-end">
+		<details class="dropdown dropdown-end" id="mobile-menu">
 			<summary class="btn btn-square btn-ghost">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -24,16 +24,52 @@
 			<ul
 				class="menu dropdown-content bg-base-100 rounded-box z-[1] w-56 p-2 shadow"
 			>
-				<li><a>Item 1</a></li>
-				<li><a>Item 2</a></li>
+				<li><a href="/" class="btn btn-ghost" id="home-link">Home</a></li>
+				<details class="dropdown dropdown-end">
+					<summary class="btn btn-ghost flex items-center gap-2 w-full"
+						>About</summary
+					>
+					<ul
+						class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full mt-2 shadow-lg"
+					>
+						<li>
+							<a href="#about-us" class="block px-4 py-2 hover:bg-gray-200"
+								>About Us</a
+							>
+						</li>
+						<li>
+							<a href="#services" class="block px-4 py-2 hover:bg-gray-200"
+								>Services</a
+							>
+						</li>
+						<li>
+							<a href="#projects" class="block px-4 py-2 hover:bg-gray-200"
+								>Our Projects</a
+							>
+						</li>
+					</ul>
+				</details>
+
+				<li><a href="/team" class="btn btn-ghost" id="team-link">Team</a></li>
+				<li>
+					<a href="/publications" class="btn btn-ghost" id="publications-link"
+						>Publications</a
+					>
+				</li>
+				<li>
+					<a href="/contact" class="btn btn-ghost" id="contact-link"
+						>Contact us</a
+					>
+				</li>
 			</ul>
 		</details>
 	</div>
+
 	<div class="hidden sm:flex space-x-4">
 		<ul class="flex text-gray-600">
 			<li><a href="/" class="btn btn-ghost" id="home-link">Home</a></li>
 			<details class="dropdown drop">
-				<summary class="btn btn-ghost">About</summary>
+				<summary class="btn btn-ghost" id="about-link">About</summary>
 				<ul
 					class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
 				>
@@ -44,53 +80,66 @@
 			</details>
 			<li><a href="/team" class="btn btn-ghost" id="team-link">Team</a></li>
 			<li>
+				<a href="/publications" class="btn btn-ghost" id="publications-link"
+					>Publications</a
+				>
+			</li>
+			<li>
 				<a href="/contact" class="btn btn-ghost" id="contact-link">Contact us</a
 				>
 			</li>
 		</ul>
 	</div>
-</div>
 
-<script is:inline>
-	document.addEventListener("DOMContentLoaded", () => {
-		const sections = document.querySelectorAll("section[id]");
-		const homeLink = document.getElementById("home-link");
-		const teamLink = document.getElementById("team-link");
-		const contactLink = document.getElementById("contact-link");
+	<script is:inline>
+		document.addEventListener("DOMContentLoaded", () => {
+			const sections = document.querySelectorAll("section[id]");
+			const homeLink = document.getElementById("home-link");
+			const aboutLink = document.getElementById("about-link");
+			const teamLink = document.getElementById("team-link");
+			const publicationsLink = document.getElementById("publications-link");
+			const contactLink = document.getElementById("contact-link");
 
-		function logVisibleSection() {
-			let currentSectionId = "";
+			function logVisibleSection() {
+				let currentSectionId = "";
 
-			for (const section of sections) {
-				const sectionTop = section.offsetTop;
-				const sectionHeight = section.offsetHeight;
-				const scrollY = window.scrollY + window.innerHeight / 2; // Adjust to check for the middle of the viewport
+				for (const section of sections) {
+					const sectionTop = section.offsetTop;
+					const sectionHeight = section.offsetHeight;
+					const scrollY = window.scrollY + window.innerHeight / 2;
 
-				if (scrollY >= sectionTop && scrollY <= sectionTop + sectionHeight) {
-					currentSectionId = section.id;
-					break;
+					if (scrollY >= sectionTop && scrollY <= sectionTop + sectionHeight) {
+						currentSectionId = section.id;
+						break;
+					}
 				}
+
+				[homeLink, teamLink, contactLink].forEach((link) =>
+					link.classList.remove("text-primary")
+				);
+
+				if (currentSectionId === "home") {
+					homeLink.classList.add("text-primary");
+				} else if (
+					currentSectionId === "aboutus" ||
+					currentSectionId === "services" ||
+					currentSectionId === "projects"
+				) {
+					aboutLink.classList.add("text-primary");
+				} else if (currentSectionId === "team") {
+					teamLink.classList.add("text-primary");
+				} else if (currentSectionId === "publications") {
+					publicationsLink.classList.add("text-primary");
+				} else if (currentSectionId === "contact") {
+					contactLink.classList.add("text-primary");
+				}
+
+				console.log(currentSectionId);
 			}
 
-			[homeLink, teamLink, contactLink].forEach((link) =>
-				link.classList.remove("text-primary")
-			);
+			window.addEventListener("scroll", logVisibleSection);
 
-			if (currentSectionId === "home") {
-				homeLink.classList.add("text-primary");
-			} else if (currentSectionId === "team") {
-				teamLink.classList.add("text-primary");
-			} else if (currentSectionId === "contact") {
-				contactLink.classList.add("text-primary");
-			}
-
-			console.log(currentSectionId);
-		}
-
-		// Listen for scroll events
-		window.addEventListener("scroll", logVisibleSection);
-
-		// Initial check in case the page is reloaded with a scroll position already set
-		logVisibleSection();
-	});
-</script>
+			logVisibleSection();
+		});
+	</script>
+</div>
