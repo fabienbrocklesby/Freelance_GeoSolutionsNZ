@@ -1,0 +1,95 @@
+---
+import Layout from "../../layouts/DefaultLayout.astro";
+
+const apiUrl = import.meta.env.API_URL;
+const response = await fetch(
+	`${apiUrl}/api/projects?populate=thumbnail,beforePhoto,afterPhoto`
+);
+const { data } = await response.json();
+
+let projects = data.map((project) => ({
+	id: project.id,
+	title: project.attributes.title,
+	description: project.attributes.description,
+	thumbnailUrl: project.attributes.thumbnail.data.attributes.url,
+	startDate: project.attributes.startDate,
+	endDate: project.attributes.endDate,
+	beforePhotoUrl: project.attributes.beforePhoto.data.attributes.url,
+	afterPhotoUrl: project.attributes.afterPhoto.data.attributes.url,
+}));
+
+projects = projects.sort(
+	(a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
+);
+---
+
+<Layout title="Projects">
+	<section class="py-16 bg-gray-50">
+		<div class="container mx-auto px-4">
+			<div class="text-center mb-12">
+				<h1 class="text-4xl font-bold text-primary mb-2">Our Projects</h1>
+				<p class="text-xl text-gray-600">
+					Explore our previous work and accomplishments
+				</p>
+			</div>
+
+			<div class="flex flex-wrap justify-center gap-8">
+				{
+					projects.map((project) => (
+						<div class="w-full sm:w-[calc(70%-1rem)] lg:w-[calc(50%-1rem)] max-w-md">
+							<a
+								href={`/projects/${project.id}`}
+								class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300 h-full flex flex-col"
+							>
+								<figure class="relative h-48 overflow-hidden">
+									<img
+										src={apiUrl + project.thumbnailUrl}
+										alt={project.title}
+										class="w-full h-full object-cover"
+									/>
+								</figure>
+								<div class="card-body p-6 flex-grow">
+									<h2 class="card-title text-xl font-semibold text-primary mb-2">
+										{project.title}
+									</h2>
+									<p class="text-sm text-gray-500 mb-4">
+										{project.startDate} - {project.endDate}
+									</p>
+									<p class="text-gray-600 mb-4 line-clamp-3">
+										{project.description}
+									</p>
+									<div class="flex space-x-4 mt-auto">
+										<div class="w-1/2 flex flex-col">
+											<div class="h-32 overflow-hidden rounded-lg">
+												<img
+													src={apiUrl + project.beforePhotoUrl}
+													alt="Before"
+													class="w-full h-full object-cover"
+												/>
+											</div>
+											<p class="text-center mt-2 text-sm text-gray-600">
+												Before
+											</p>
+										</div>
+										<div class="w-1/2 flex flex-col">
+											<div class="h-32 overflow-hidden rounded-lg">
+												<img
+													src={apiUrl + project.afterPhotoUrl}
+													alt="After"
+													class="w-full h-full object-cover"
+												/>
+											</div>
+											<p class="text-center mt-2 text-sm text-gray-600">
+												After
+											</p>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+</Layout>

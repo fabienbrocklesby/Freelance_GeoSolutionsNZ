@@ -1,0 +1,70 @@
+---
+import Layout from "../../layouts/DefaultLayout.astro";
+
+const { id } = Astro.params;
+const apiUrl = import.meta.env.API_URL;
+const response = await fetch(
+	`${apiUrl}/api/projects/${id}?populate=thumbnail,beforePhoto,afterPhoto`
+);
+const { data } = await response.json();
+const { attributes: project } = data;
+---
+
+<Layout title={project.title}>
+	<div class="bg-gray-50">
+		<div class="container mx-auto px-4 py-16">
+			<div class="max-w-4xl mx-auto">
+				<h1 class="text-4xl font-bold text-primary mb-4">{project.title}</h1>
+
+				<div class="bg-base-100 shadow-xl rounded-lg overflow-hidden mb-8">
+					<img
+						src={apiUrl + project.thumbnail.data.attributes.url}
+						alt={project.title}
+						class="w-full h-auto object-cover"
+					/>
+				</div>
+
+				<div class="mt-4 bg-gray-200 p-8 rounded-lg shadow-lg">
+					<h2 class="text-2xl font-semibold mb-2">Project Details</h2>
+					<p class="text-gray-600 mb-4">{project.description}</p>
+					<p class="text-sm text-gray-500">
+						<span class="font-bold">Duration:</span>
+						{project.startDate} - {project.endDate}
+					</p>
+				</div>
+
+				<div class="mt-16 mb-8 bg-gray-200 p-8 rounded-lg shadow-lg">
+					<h2 class="text-2xl font-semibold mb-4">Before and After</h2>
+					<div class="flex flex-col sm:flex-row gap-8">
+						<div class="flex-1">
+							<div class="rounded-lg overflow-hidden mb-2">
+								<img
+									src={apiUrl + project.beforePhoto.data.attributes.url}
+									alt="Before"
+									class="w-full h-64 object-cover"
+								/>
+							</div>
+							<p class="text-center text-gray-600 font-semibold">Before</p>
+						</div>
+						<div class="flex-1">
+							<div class="rounded-lg overflow-hidden mb-2">
+								<img
+									src={apiUrl + project.afterPhoto.data.attributes.url}
+									alt="After"
+									class="w-full h-64 object-cover"
+								/>
+							</div>
+							<p class="text-center text-gray-600 font-semibold">After</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="text-center mt-16">
+					<a href="/projects" class="btn btn-primary text-white">
+						Back to All Projects
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</Layout>
