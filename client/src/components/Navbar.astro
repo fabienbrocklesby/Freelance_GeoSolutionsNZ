@@ -1,6 +1,6 @@
 <header class="fixed top-0 left-0 right-0 z-50 bg-base-100 shadow-lg">
 	<div
-		class="flex items-center justify-between py-4 px-6 sm:px-8 md:px-12 lg:px-32 xl:px-40"
+		class="flex items-center justify-between py-5 px-6 sm:px-8 md:px-12 lg:px-32 xl:px-40"
 	>
 		<div id="logo">
 			<a href="/"><img src="/images/logo.webp" class="w-28" alt="logo" /></a>
@@ -31,20 +31,26 @@
 							>About</summary
 						>
 						<ul
-							class="menu dropdown-content bg-base-100 rounded-box z-[1] w-full mt-2 shadow-lg"
+							class="menu dropdown-content bg-base-100 rounded-box z-[1] w-full shadow-lg"
 						>
 							<li>
-								<a href="/#about" class="block px-4 py-2 hover:bg-gray-200"
+								<a
+									href="/#about"
+									class="block px-4 py-2 hover:bg-gray-200 about-link"
 									>About Us</a
 								>
 							</li>
 							<li>
-								<a href="#services" class="block px-4 py-2 hover:bg-gray-200"
+								<a
+									href="/#services"
+									class="block px-4 py-2 hover:bg-gray-200 services-link"
 									>Services</a
 								>
 							</li>
 							<li>
-								<a href="/projects" class="block px-4 py-2 hover:bg-gray-200"
+								<a
+									href="/projects"
+									class="block px-4 py-2 hover:bg-gray-200 projects-link"
 									>Our Projects</a
 								>
 							</li>
@@ -66,14 +72,14 @@
 		<div class="hidden sm:flex space-x-4">
 			<ul class="flex text-gray-600">
 				<li><a href="/#hero" class="btn btn-ghost home-link">Home</a></li>
-				<details class="dropdown">
-					<summary class="btn btn-ghost about-link">About</summary>
+				<details class="dropdown" id="largeAboutMenu">
+					<summary class="btn btn-ghost">About</summary>
 					<ul
 						class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
 					>
-						<li><a href="/#about">About Us</a></li>
-						<li><a href="#services">Services</a></li>
-						<li><a href="/projects">Our Projects</a></li>
+						<li><a href="/#about" class="about-link">About Us</a></li>
+						<li><a href="#services" class="services-link">Services</a></li>
+						<li><a href="/projects" class="projects-link">Our Projects</a></li>
 					</ul>
 				</details>
 				<li><a href="/#team" class="btn btn-ghost team-link">Team</a></li>

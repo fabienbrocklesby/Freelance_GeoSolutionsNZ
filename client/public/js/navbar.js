@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	const sections = document.querySelectorAll("section[id]");
 	const homeLink = document.querySelectorAll(".home-link");
 	const aboutLink = document.querySelectorAll(".about-link");
+	const servicesLink = document.querySelectorAll(".services-link");
+	const projectsLink = document.querySelectorAll(".projects-link");
 	const teamLink = document.querySelectorAll(".team-link");
 	const publicationsLink = document.querySelectorAll(".publications-link");
 	const contactLink = document.querySelectorAll(".contact-link");
@@ -21,13 +23,18 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		function removeAllHighlights() {
-			[homeLink, aboutLink, teamLink, publicationsLink, contactLink].forEach(
-				(links) => {
-					links.forEach((link) => {
-						link.classList.remove("text-primary");
-					});
-				}
-			);
+			[
+				homeLink,
+				aboutLink,
+				teamLink,
+				servicesLink,
+				publicationsLink,
+				contactLink,
+			].forEach((links) => {
+				links.forEach((link) => {
+					link.classList.remove("text-primary");
+				});
+			});
 		}
 
 		removeAllHighlights();
@@ -40,12 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		if (currentSectionId === "hero") {
 			addHighlight(homeLink);
-		} else if (
-			currentSectionId === "about" ||
-			currentSectionId === "services" ||
-			currentSectionId === "projects"
-		) {
+		} else if (currentSectionId === "about") {
 			addHighlight(aboutLink);
+		} else if (currentSectionId === "services") {
+			addHighlight(servicesLink);
+		} else if (currentSectionId === "projects") {
+			addHighlight(projectsLink);
 		} else if (currentSectionId === "team") {
 			addHighlight(teamLink);
 		} else if (currentSectionId === "publications") {
@@ -60,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	const dropdownItems = document.querySelectorAll(".dropdown-content li a");
 	const mobileMenu = document.getElementById("mobile-menu");
+	const largeAboutMenu = document.getElementById("largeAboutMenu");
 
 	function closeAllDropdowns() {
 		const allDetails = document.querySelectorAll("details");
@@ -75,7 +83,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	document.addEventListener("click", (event) => {
-		if (!mobileMenu.contains(event.target)) {
+		if (
+			!mobileMenu.contains(event.target) &&
+			!largeAboutMenu.contains(event.target)
+		) {
 			closeAllDropdowns();
 		}
 	});
