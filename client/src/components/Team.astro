@@ -1,39 +1,50 @@
 ---
-const teamMembers = [
-	{
-		name: "Sally Hargraves",
-		role: "Professional Engineering Geologist",
-		image: "/images/team/Sally.jpg",
-	},
-	{
-		name: "Mark Gray",
-		role: "Senior Engineering Geologist",
-		email: "mark@geosolutions.co.nz",
-		image: "/images/team/Mark.jpeg",
-	},
-	{
-		name: "Sam Buckner",
-		role: "Engineering Geologist",
-		email: "sam@geosolutions.nz",
-		image: "assets/img/employee3.png",
-	},
-	{
-		name: "Jordan Lindbom",
-		role: "Graduate Engineering Geologist",
-		email: "jordan@geosolutions.nz",
-		image: "assets/img/profile pic 2.jpg",
-	},
-	{
-		name: "Jarrod Hammond",
-		role: "Project Support",
-		image: "assets/img/Jarrod headshot.jpg",
-	},
-	{
-		name: "Danielle Martin",
-		role: "Administrative Support",
-		image: "assets/img/Danielle Headshot.JPG",
-	},
-];
+// const teamMembers = [
+// 	{
+// 		name: "Sally Hargraves",
+// 		role: "Professional Engineering Geologist",
+// 		image: "/images/team/Sally.jpg",
+// 	},
+// 	{
+// 		name: "Mark Gray",
+// 		role: "Senior Engineering Geologist",
+// 		email: "mark@geosolutions.co.nz",
+// 		image: "/images/team/Mark.jpeg",
+// 	},
+// 	{
+// 		name: "Sam Buckner",
+// 		role: "Engineering Geologist",
+// 		email: "sam@geosolutions.nz",
+// 		image: "assets/img/employee3.png",
+// 	},
+// 	{
+// 		name: "Jordan Lindbom",
+// 		role: "Graduate Engineering Geologist",
+// 		email: "jordan@geosolutions.nz",
+// 		image: "assets/img/profile pic 2.jpg",
+// 	},
+// 	{
+// 		name: "Jarrod Hammond",
+// 		role: "Project Support",
+// 		image: "assets/img/Jarrod headshot.jpg",
+// 	},
+// 	{
+// 		name: "Danielle Martin",
+// 		role: "Administrative Support",
+// 		image: "assets/img/Danielle Headshot.JPG",
+// 	},
+// ];
+
+const apiUrl = import.meta.env.API_URL;
+const response = await fetch(`${apiUrl}/api/teams?populate=image`);
+const { data } = await response.json();
+
+const teamMembers = data.map((project) => ({
+	id: project.id,
+	name: project.attributes.name,
+	role: project.attributes.role,
+	image: project.attributes.image.data.attributes.url,
+}));
 ---
 
 <section
@@ -46,8 +57,9 @@ const teamMembers = [
 			teamMembers.map((member) => (
 				<div class="card bg-base-100 w-full shadow-xl">
 					<figure>
-						<img src={member.image} alt="Shoes" />
+						<img src={apiUrl + member.image} alt="Shoes" />
 					</figure>
+
 					<div class="card-body">
 						<h3 class="card-title">{member.name}</h3>
 						<p>{member.role}</p>
