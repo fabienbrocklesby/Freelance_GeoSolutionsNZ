@@ -1,5 +1,5 @@
 <div
-	class="flex items-center shadow-lg justify-between py-7 px-6 sm:px-8 md:px-12 lg:px-32 xl:px-40"
+	class="sticky top-0 bg-base-100 flex items-center shadow-lg justify-between py-7 px-6 sm:px-8 md:px-12 lg:px-32 xl:px-40 z-50"
 >
 	<div id="logo">
 		<a href="/"><img src="/images/logo.webp" class="w-28" alt="logo" /></a>
@@ -24,9 +24,10 @@
 			<ul
 				class="menu dropdown-content bg-base-100 rounded-box z-[1] w-56 p-2 shadow"
 			>
-				<li><a href="/" class="btn btn-ghost" id="home-link">Home</a></li>
+				<li><a href="/" class="btn btn-ghost home-link">Home</a></li>
 				<details class="dropdown dropdown-end">
-					<summary class="btn btn-ghost flex items-center gap-2 w-full"
+					<summary
+						class="btn btn-ghost flex items-center gap-2 w-full about-link"
 						>About</summary
 					>
 					<ul
@@ -50,16 +51,14 @@
 					</ul>
 				</details>
 
-				<li><a href="/team" class="btn btn-ghost" id="team-link">Team</a></li>
+				<li><a href="/team" class="btn btn-ghost team-link">Team</a></li>
 				<li>
-					<a href="/publications" class="btn btn-ghost" id="publications-link"
+					<a href="/publications" class="btn btn-ghost publications-link"
 						>Publications</a
 					>
 				</li>
 				<li>
-					<a href="/contact" class="btn btn-ghost" id="contact-link"
-						>Contact us</a
-					>
+					<a href="/contact" class="btn btn-ghost contact-link">Contact us</a>
 				</li>
 			</ul>
 		</details>
@@ -67,9 +66,9 @@
 
 	<div class="hidden sm:flex space-x-4">
 		<ul class="flex text-gray-600">
-			<li><a href="/" class="btn btn-ghost" id="home-link">Home</a></li>
+			<li><a href="/" class="btn btn-ghost home-link">Home</a></li>
 			<details class="dropdown drop">
-				<summary class="btn btn-ghost" id="about-link">About</summary>
+				<summary class="btn btn-ghost about-link">About</summary>
 				<ul
 					class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
 				>
@@ -78,68 +77,15 @@
 					<li><a>Our Projects</a></li>
 				</ul>
 			</details>
-			<li><a href="/team" class="btn btn-ghost" id="team-link">Team</a></li>
+			<li><a href="/team" class="btn btn-ghost team-link">Team</a></li>
 			<li>
-				<a href="/publications" class="btn btn-ghost" id="publications-link"
+				<a href="/publications" class="btn btn-ghost publications-link"
 					>Publications</a
 				>
 			</li>
 			<li>
-				<a href="/contact" class="btn btn-ghost" id="contact-link">Contact us</a
-				>
+				<a href="/contact" class="btn btn-ghost contact-link">Contact us</a>
 			</li>
 		</ul>
 	</div>
-
-	<script is:inline>
-		document.addEventListener("DOMContentLoaded", () => {
-			const sections = document.querySelectorAll("section[id]");
-			const homeLink = document.getElementById("home-link");
-			const aboutLink = document.getElementById("about-link");
-			const teamLink = document.getElementById("team-link");
-			const publicationsLink = document.getElementById("publications-link");
-			const contactLink = document.getElementById("contact-link");
-
-			function logVisibleSection() {
-				let currentSectionId = "";
-
-				for (const section of sections) {
-					const sectionTop = section.offsetTop;
-					const sectionHeight = section.offsetHeight;
-					const scrollY = window.scrollY + window.innerHeight / 2;
-
-					if (scrollY >= sectionTop && scrollY <= sectionTop + sectionHeight) {
-						currentSectionId = section.id;
-						break;
-					}
-				}
-
-				[homeLink, teamLink, contactLink].forEach((link) =>
-					link.classList.remove("text-primary")
-				);
-
-				if (currentSectionId === "home") {
-					homeLink.classList.add("text-primary");
-				} else if (
-					currentSectionId === "aboutus" ||
-					currentSectionId === "services" ||
-					currentSectionId === "projects"
-				) {
-					aboutLink.classList.add("text-primary");
-				} else if (currentSectionId === "team") {
-					teamLink.classList.add("text-primary");
-				} else if (currentSectionId === "publications") {
-					publicationsLink.classList.add("text-primary");
-				} else if (currentSectionId === "contact") {
-					contactLink.classList.add("text-primary");
-				}
-
-				console.log(currentSectionId);
-			}
-
-			window.addEventListener("scroll", logVisibleSection);
-
-			logVisibleSection();
-		});
-	</script>
 </div>
