@@ -1,91 +1,97 @@
-<div
-	class="sticky top-0 bg-base-100 flex items-center shadow-lg justify-between py-7 px-6 sm:px-8 md:px-12 lg:px-32 xl:px-40 z-50"
->
-	<div id="logo">
-		<a href="/"><img src="/images/logo.webp" class="w-28" alt="logo" /></a>
-	</div>
+<header class="fixed top-0 left-0 right-0 z-50">
+	<div class="sticky top-0">
+		<div
+			class="bg-base-100 flex items-center shadow-lg justify-between py-7 px-6 sm:px-8 md:px-12 lg:px-32 xl:px-40 z-50"
+		>
+			<div id="logo">
+				<a href="/"><img src="/images/logo.webp" class="w-28" alt="logo" /></a>
+			</div>
 
-	<div class="sm:hidden">
-		<details class="dropdown dropdown-end" id="mobile-menu">
-			<summary class="btn btn-square btn-ghost">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					class="inline-block h-6 w-6 stroke-gray-500"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M4 6h16M4 12h16m-7 6h7"></path>
-				</svg>
-			</summary>
-			<ul
-				class="menu dropdown-content bg-base-100 rounded-box z-[1] w-56 p-2 shadow"
-			>
-				<li><a href="/" class="btn btn-ghost home-link">Home</a></li>
-				<details class="dropdown dropdown-end">
-					<summary
-						class="btn btn-ghost flex items-center gap-2 w-full about-link"
-						>About</summary
-					>
+			<div class="sm:hidden">
+				<details class="dropdown dropdown-end" id="mobile-menu">
+					<summary class="btn btn-square btn-ghost">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							class="inline-block h-6 w-6 stroke-gray-500"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M4 6h16M4 12h16m-7 6h7"></path>
+						</svg>
+					</summary>
 					<ul
-						class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full mt-2 shadow-lg"
+						class="menu dropdown-content bg-base-100 rounded-box z-[1] w-56 p-2 shadow"
 					>
+						<li><a href="/" class="btn btn-ghost home-link">Home</a></li>
+						<details class="dropdown dropdown-end">
+							<summary
+								class="btn btn-ghost flex items-center gap-2 w-full about-link"
+								>About</summary
+							>
+							<ul
+								class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full mt-2 shadow-lg"
+							>
+								<li>
+									<a href="#about-us" class="block px-4 py-2 hover:bg-gray-200"
+										>About Us</a
+									>
+								</li>
+								<li>
+									<a href="#services" class="block px-4 py-2 hover:bg-gray-200"
+										>Services</a
+									>
+								</li>
+								<li>
+									<a href="/projects" class="block px-4 py-2 hover:bg-gray-200"
+										>Our Projects</a
+									>
+								</li>
+							</ul>
+						</details>
+
+						<li><a href="/team" class="btn btn-ghost team-link">Team</a></li>
 						<li>
-							<a href="#about-us" class="block px-4 py-2 hover:bg-gray-200"
-								>About Us</a
+							<a href="/publications" class="btn btn-ghost publications-link"
+								>Publications</a
 							>
 						</li>
 						<li>
-							<a href="#services" class="block px-4 py-2 hover:bg-gray-200"
-								>Services</a
-							>
-						</li>
-						<li>
-							<a href="/projects" class="block px-4 py-2 hover:bg-gray-200"
-								>Our Projects</a
+							<a href="/contact" class="btn btn-ghost contact-link"
+								>Contact us</a
 							>
 						</li>
 					</ul>
 				</details>
+			</div>
 
-				<li><a href="/team" class="btn btn-ghost team-link">Team</a></li>
-				<li>
-					<a href="/publications" class="btn btn-ghost publications-link"
-						>Publications</a
-					>
-				</li>
-				<li>
-					<a href="/contact" class="btn btn-ghost contact-link">Contact us</a>
-				</li>
-			</ul>
-		</details>
-	</div>
-
-	<div class="hidden sm:flex space-x-4">
-		<ul class="flex text-gray-600">
-			<li><a href="/" class="btn btn-ghost home-link">Home</a></li>
-			<details class="dropdown drop">
-				<summary class="btn btn-ghost about-link">About</summary>
-				<ul
-					class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-				>
-					<li><a>About Us</a></li>
-					<li><a>Services</a></li>
-					<li><a href="/projects">Our Projects</a></li>
+			<div class="hidden sm:flex space-x-4">
+				<ul class="flex text-gray-600">
+					<li><a href="/" class="btn btn-ghost home-link">Home</a></li>
+					<details class="dropdown drop">
+						<summary class="btn btn-ghost about-link">About</summary>
+						<ul
+							class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+						>
+							<li><a>About Us</a></li>
+							<li><a>Services</a></li>
+							<li><a href="/projects">Our Projects</a></li>
+						</ul>
+					</details>
+					<li><a href="/team" class="btn btn-ghost team-link">Team</a></li>
+					<li>
+						<a href="/publications" class="btn btn-ghost publications-link"
+							>Publications</a
+						>
+					</li>
+					<li>
+						<a href="/contact" class="btn btn-ghost contact-link">Contact us</a>
+					</li>
 				</ul>
-			</details>
-			<li><a href="/team" class="btn btn-ghost team-link">Team</a></li>
-			<li>
-				<a href="/publications" class="btn btn-ghost publications-link"
-					>Publications</a
-				>
-			</li>
-			<li>
-				<a href="/contact" class="btn btn-ghost contact-link">Contact us</a>
-			</li>
-		</ul>
+			</div>
+		</div>
 	</div>
-</div>
+</header>

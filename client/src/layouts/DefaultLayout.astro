@@ -13,11 +13,24 @@ const { title } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body>
-		<Navbar />
+		<div id="navbar">
+			<Navbar />
+		</div>
 		<div>
 			<slot />
 		</div>
 
 		<script is:inline src="/js/navbar.js"></script>
+		<script is:inline>
+			document.addEventListener("DOMContentLoaded", () => {
+				const navbar = document.getElementById("navbar");
+				const hero = document.querySelector(".hero");
+				if (navbar && hero) {
+					const navbarHeight = navbar.offsetHeight;
+					console.log(`Navbar height: ${navbarHeight}px`);
+					hero.style.marginTop = `-${navbarHeight}px`;
+				}
+			});
+		</script>
 	</body>
 </html>

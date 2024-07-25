@@ -1,10 +1,151 @@
 ---
 import Layout from "../layouts/DefaultLayout.astro";
+
+const teamMembers = [
+	{
+		name: "Sally Hargraves",
+		role: "Professional Engineering Geologist",
+		image: "assets/img/Stuff News Sally Nov-22 small.jpg",
+	},
+	{
+		name: "Mark Gray",
+		role: "Senior Engineering Geologist",
+		email: "mark@geosolutions.co.nz",
+		image: "assets/img/Mark Gray skateboard.jpeg",
+	},
+	{
+		name: "Sam Buckner",
+		role: "Engineering Geologist",
+		email: "sam@geosolutions.nz",
+		image: "assets/img/employee3.png",
+	},
+	{
+		name: "Jordan Lindbom",
+		role: "Graduate Engineering Geologist",
+		email: "jordan@geosolutions.nz",
+		image: "assets/img/profile pic 2.jpg",
+	},
+	{
+		name: "Jarrod Hammond",
+		role: "Project Support",
+		image: "assets/img/Jarrod headshot.jpg",
+	},
+	{
+		name: "Danielle Martin",
+		role: "Administrative Support",
+		image: "assets/img/Danielle Headshot.JPG",
+	},
+];
+
+const services = [
+	"Site and soil investigations",
+	"Landslip damage assessment and remediation",
+	"Subdivision geotechnical assessments (urban and rural)",
+	"Liquefaction assessment",
+	"Establishment of fault location",
+	"Earthworks design, supervision & certification",
+	"Natural disaster insurance assessment",
+	"Geotechnical peer review services and expert opinions",
+	"On-site wastewater disposal suitability assessment",
+	"Geotechnical site certification",
+];
 ---
 
-<Layout title="test">
-	<section id="home">
-		<h1 class="text-xl">Hello, Astro!</h1>
-		<p>Welcome to your new Astro site.</p>
+<Layout title="GeoSolutions">
+	<section
+		class="hero min-h-screen bg-gradient-to-r from-[#6ff0b0] to-[#25f490] flex items-center justify-center text-center"
+	>
+		<div class="hero-content">
+			<div>
+				<h1 class="text-5xl font-semibold mb-2 text-gray-700">
+					Welcome to <span class="font-extrabold">GeoSolutions</span>
+				</h1>
+				<h2 class="text-xl mb-6 text-gray-600">Geotechnical Specialists</h2>
+				<a
+					href="#about"
+					class="btn btn-neutral rounded-full border-2 border-primary px-8 text-primary"
+					>Get Started</a
+				>
+			</div>
+		</div>
+	</section>
+
+	<!-- About Section -->
+	<section id="about" class="py-16">
+		<h2 class="text-3xl font-bold text-center mb-8">About Us</h2>
+		<p class="text-lg text-center max-w-3xl mx-auto">
+			We are a specialised geotechnical consultancy, covering projects and sites
+			all around the Top of the South Island and look after both the residential
+			and commercial building sectors. We're a local business and aim to look
+			after our clients so that they tell all their friends. Word-of-mouth
+			referrals are our favourite jobs! Talk to us now and find out how we can
+			help.
+		</p>
+	</section>
+
+	<!-- Services Section -->
+	<section id="services" class="py-16 bg-base-200">
+		<div class="max-w-4xl mx-auto">
+			<h2 class="text-3xl font-bold text-center mb-8">Our Services</h2>
+			<p class="text-lg mb-8">
+				GeoSolutions provides specialist geotechnical services to assist you
+				with your building project. You may need to provide a Geotech report to
+				accompany your application for resource consent for a subdivision or
+				would like a foundation assessment for a new cellphone tower. We will
+				help you establish an appropriate and cost-effective investigation for
+				your project and then walk you through the process through to consent
+				application.
+			</p>
+			<ul class="list-disc pl-6">
+				{services.map((service) => <li class="mb-2">{service}</li>)}
+			</ul>
+		</div>
+	</section>
+
+	<!-- Team Section -->
+	<section id="team" class="py-16">
+		<h2 class="text-3xl font-bold text-center mb-8">Team Members</h2>
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+			{
+				teamMembers.map((member) => (
+					<div class="card bg-base-100 shadow-xl">
+						<figure class="px-10 pt-10">
+							<img
+								src={member.image}
+								alt={member.name}
+								class="rounded-xl h-64 w-64 object-cover"
+							/>
+						</figure>
+						<div class="card-body items-center text-center">
+							<h3 class="card-title">{member.name}</h3>
+							<p>{member.role}</p>
+							{member.email && <p class="text-sm">{member.email}</p>}
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<!-- Contact Section -->
+	<section id="contact" class="py-16 bg-base-200 text-center">
+		<h2 class="text-3xl font-bold mb-8">Contact Us</h2>
+		<p class="text-lg">
+			Mobile: 027 898 6000 <br />
+			admin@geosolutions.nz<br />
+			sally@geosolutions.nz
+		</p>
 	</section>
 </Layout>
+
+<!-- Footer -->
+<footer class="footer footer-center p-10 bg-base-200 text-base-content">
+	<div>
+		<p class="font-bold">GeoSolutions</p>
+		<p>
+			Our focus is on the private sector market in the communities in and around
+			the top of the South Island, New Zealand. (Nelson Tasman)
+		</p>
+		<p>Copyright © 2022 - All rights reserved</p>
+	</div>
+</footer>
