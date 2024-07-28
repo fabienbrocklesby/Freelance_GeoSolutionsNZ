@@ -1,8 +1,8 @@
 ---
 import Layout from "../../layouts/DefaultLayout.astro";
 
-const apiUrl = import.meta.env.PUBLIC_API_URL;
-const fileUrl = import.meta.env.PUBLIC_FILE_URL;
+const apiUrl = process.env.PUBLIC_API_URL;
+const fileUrl = process.env.PUBLIC_FILE_URL;
 const response = await fetch(`${apiUrl}/api/documents?populate=file`);
 const { data } = await response.json();
 const documents = data.map((document) => ({

@@ -51,10 +51,11 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    env_file: .env
+    env_file: ./client/.env
     environment:
-      HOST: 0.0.0.0
-      PORT: 4321
+      PUBLIC_API_URL: http://strapi:1337
+      PUBLIC_IMAGE_URL: http://localhost:1337
+      PUBLIC_FILE_URL: http://localhost:1337
     ports:
       - "4321:4321"
     depends_on:

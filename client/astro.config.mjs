@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import node from "@astrojs/node";
+import "dotenv/config";
 
 import tailwind from "@astrojs/tailwind";
 
