@@ -854,6 +854,28 @@ export interface ApiEmailEmail extends Schema.CollectionType {
   };
 }
 
+export interface ApiHeroHero extends Schema.CollectionType {
+  collectionName: 'heroes';
+  info: {
+    singularName: 'hero';
+    pluralName: 'heroes';
+    displayName: 'Hero';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Banner: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::hero.hero', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::hero.hero', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
 export interface ApiProjectProject extends Schema.CollectionType {
   collectionName: 'projects';
   info: {
@@ -937,6 +959,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::document.document': ApiDocumentDocument;
       'api::email.email': ApiEmailEmail;
+      'api::hero.hero': ApiHeroHero;
       'api::project.project': ApiProjectProject;
       'api::team.team': ApiTeamTeam;
     }

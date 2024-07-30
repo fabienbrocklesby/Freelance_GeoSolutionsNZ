@@ -1,7 +1,36 @@
+---
+const apiUrl = process.env.PUBLIC_API_URL;
+const PUBLIC_IMAGE_URL = process.env.PUBLIC_IMAGE_URL;
+
+import { getImage } from "astro:assets";
+
+const response = await fetch(`${apiUrl}/api/heroes?populate=Banner`);
+const { data } = await response.json();
+
+const publicHero = data[0];
+
+const imageUrl = publicHero.attributes.Banner.data.attributes.url;
+
+const optimizedImage = await getImage({
+	src: imageUrl,
+	width: 1600,
+	height: 900,
+	format: "webp",
+});
+---
+
+<head>
+	<link
+		rel="preload"
+		as="image"
+		href={`${PUBLIC_IMAGE_URL + optimizedImage.src}`}
+	/>
+</head>
+
 <section
 	id="hero"
 	class="hero min-h-screen bg-cover bg-center flex items-center justify-center text-center relative"
-	style="background-image: url('/images/banner.jpg');"
+	style={`background-image: url('${PUBLIC_IMAGE_URL + optimizedImage.src}');`}
 >
 	<div
 		class="absolute inset-0 bg-gradient-to-r from-black to-[#182416] opacity-50"
@@ -20,11 +49,13 @@
 				Welcome to <span class="font-extrabold">GeoSolutions</span>
 			</h1>
 			<h2 class="text-xl mb-6 text-gray-600">Geotechnical Specialists</h2>
+
 			<a
 				href="#about"
-				class="btn btn-neutral hover:bg-white hover:scale-105 rounded-full border-2 border-primary px-8 text-primary"
-				>Get Started</a
-			>
+				class="btn btn-neutral hover:bg-white hover:scale-105
+			rounded-full border-2 border-primary px-8 text-primary"
+				>Get Started
+			</a>
 		</div>
 	</div>
 </section>
