@@ -11,29 +11,28 @@ document.addEventListener("DOMContentLoaded", () => {
 		loading.classList.remove("hidden");
 		form.querySelector("div button").classList.add("btn-disabled");
 
-		const formData = new FormData(form);
+		const formData = new FormData();
 		const data = {
-			Name: formData.get("Name"),
-			Subject: formData.get("Subject"),
-			FromEmail: formData.get("FromEmail"),
-			Message: formData.get("Message"),
+			Name: form.Name.value,
+			Subject: form.Subject.value,
+			FromEmail: form.FromEmail.value,
+			Message: form.Message.value,
 		};
+		formData.append("data", JSON.stringify(data));
 
-		const payload = {
-			data: data,
-		};
+		const fileInput = form.querySelector('input[name="File"]').files[0];
+		if (fileInput) {
+			formData.append("files.File", fileInput);
+		}
 
 		fetch(`${apiUrl}/api/emails`, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(payload),
+			body: formData,
 		})
 			.then((response) => response.json())
 			.then((data) => {
 				if (data.error) {
-					throw new Error(data.error);
+					throw new Error(data.error.message || "Unknown error occurred");
 				}
 				loading.classList.add("hidden");
 				form.querySelector("div button").classList.remove("btn-disabled");

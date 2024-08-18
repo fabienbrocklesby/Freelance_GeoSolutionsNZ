@@ -27,6 +27,16 @@
     "Message": {
       "type": "text",
       "required": true
+    },
+    "File": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

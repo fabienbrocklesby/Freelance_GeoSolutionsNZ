@@ -45,28 +45,38 @@ const apiUrl = process.env.PUBLIC_FILE_URL;
 			<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 				<input
 					type="text"
-					placeholder="Your Name"
+					placeholder="Your Name *"
 					class="input input-bordered w-full"
 					name="Name"
 					required
 				/>
 				<input
 					type="email"
-					placeholder="Your Email"
+					placeholder="Your Email *"
 					class="input input-bordered w-full"
 					name="FromEmail"
 					required
 				/>
 			</div>
+			<div>
+				<label for="File" class="text-sm text-gray-400"
+					>Attach File (e.g Site Plan)</label
+				>
+				<input
+					type="file"
+					class="mt-1 file-input file-input-bordered w-full"
+					name="File"
+				/>
+			</div>
 			<input
 				type="text"
-				placeholder="Subject"
+				placeholder="Subject *"
 				class="input input-bordered w-full"
 				name="Subject"
 				required
 			/>
 			<textarea
-				placeholder="Your Message"
+				placeholder="Your Message *"
 				class="textarea textarea-bordered w-full"
 				rows="5"
 				name="Message"
