@@ -23,25 +23,27 @@ const teamMembers = data.map((project) => ({
 	<h2 class="text-3xl font-semibold text-center mb-8 text-gray-600">
 		Team Members
 	</h2>
-	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-		{
-			teamMembers.map((member) => (
-				<div class="card bg-base-100 w-full shadow-xl hover:scale-105 transition-transform duration-300">
-					<figure>
-						<img src={imageUrl + member.image} alt="Shoes" class="w-full" />
-					</figure>
+	<div class="max-w-screen-lg">
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+			{
+				teamMembers.map((member) => (
+					<div class="card bg-base-100 w-full shadow-xl hover:scale-105 transition-transform duration-300">
+						<figure>
+							<img src={imageUrl + member.image} alt="Shoes" class="w-full" />
+						</figure>
 
-					<div class="card-body">
-						<h3 class="card-title">{member.name}</h3>
-						<p>{member.role}</p>
-						{member.email && (
-							<a href={`mailto:` + member.email}>
-								<p class="text-sm hover:text-primary">{member.email}</p>
-							</a>
-						)}
+						<div class="card-body">
+							<h3 class="card-title">{member.name}</h3>
+							<p>{member.role}</p>
+							{member.email && (
+								<a href={`mailto:` + member.email}>
+									<p class="text-sm hover:text-primary">{member.email}</p>
+								</a>
+							)}
+						</div>
 					</div>
-				</div>
-			))
-		}
+				))
+			}
+		</div>
 	</div>
 </section>
