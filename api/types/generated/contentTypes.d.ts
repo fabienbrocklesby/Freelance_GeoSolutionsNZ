@@ -839,6 +839,7 @@ export interface ApiEmailEmail extends Schema.CollectionType {
     FromEmail: Attribute.Email & Attribute.Required;
     Message: Attribute.Text & Attribute.Required;
     File: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    FileName: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

@@ -18,12 +18,16 @@ document.addEventListener("DOMContentLoaded", () => {
 			FromEmail: form.FromEmail.value,
 			Message: form.Message.value,
 		};
-		formData.append("data", JSON.stringify(data));
 
 		const fileInput = form.querySelector('input[name="File"]').files[0];
 		if (fileInput) {
+			data.FileName = fileInput.name;
 			formData.append("files.File", fileInput);
 		}
+
+		formData.append("data", JSON.stringify(data));
+
+		console.log(fileInput.name);
 
 		fetch(`${apiUrl}/api/emails`, {
 			method: "POST",
