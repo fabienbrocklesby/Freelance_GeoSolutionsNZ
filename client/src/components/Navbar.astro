@@ -1,13 +1,13 @@
 <header class="fixed top-0 left-0 right-0 z-50 bg-base-100 shadow-lg">
 	<div
-		class="flex items-center justify-between py-5 px-6 sm:px-8 md:px-12 lg:px-32 xl:px-40"
+		class="flex items-center justify-between py-5 px-6 sm:px-8 md:px-8 lg:px-32 xl:px-40"
 		data-aos="slide-down"
 		data-aos-duration="750"
 	>
 		<div id="logo">
 			<a href="/"><img src="/images/logo.webp" class="w-28" alt="logo" /></a>
 		</div>
-		<div class="sm:hidden">
+		<div class="md:hidden">
 			<details class="dropdown dropdown-end" id="mobile-menu">
 				<summary class="btn btn-square btn-ghost">
 					<svg
@@ -49,16 +49,14 @@
 									>Services</a
 								>
 							</li>
-							<li>
-								<a
-									href="/projects"
-									class="block px-4 py-2 hover:bg-gray-200 projects-link"
-									>Our Projects</a
-								>
-							</li>
 						</ul>
 					</details>
 					<li><a href="/#team" class="btn btn-ghost team-link">Team</a></li>
+					<li>
+						<a href="/projects" class="btn btn-ghost projects-link"
+							>Our Projects</a
+						>
+					</li>
 					<li>
 						<a href="/publications" class="btn btn-ghost publications-link"
 							>Publications</a
@@ -71,7 +69,7 @@
 				</ul>
 			</details>
 		</div>
-		<div class="hidden sm:flex space-x-4">
+		<div class="hidden md:flex space-x-4">
 			<ul class="flex text-gray-600">
 				<li><a href="/#hero" class="btn btn-ghost home-link">Home</a></li>
 				<details class="dropdown" id="largeAboutMenu">
@@ -81,10 +79,14 @@
 					>
 						<li><a href="/#about" class="about-link">About Us</a></li>
 						<li><a href="#services" class="services-link">Services</a></li>
-						<li><a href="/projects" class="projects-link">Our Projects</a></li>
 					</ul>
 				</details>
 				<li><a href="/#team" class="btn btn-ghost team-link">Team</a></li>
+				<li>
+					<a href="/projects" class="btn btn-ghost projects-link"
+						>Our Projects</a
+					>
+				</li>
 				<li>
 					<a href="/publications" class="btn btn-ghost publications-link"
 						>Publications</a
