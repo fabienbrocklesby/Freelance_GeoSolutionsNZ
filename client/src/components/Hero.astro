@@ -1,61 +1,126 @@
 ---
-const apiUrl = process.env.PUBLIC_API_URL;
-const PUBLIC_IMAGE_URL = process.env.PUBLIC_IMAGE_URL;
-
 import { getImage } from "astro:assets";
+import { marked } from "marked";
+import { fetchAPI, getImageUrl } from "../lib/api.js";
+import { heroDefaults } from "../lib/constants.js";
 
-const response = await fetch(`${apiUrl}/api/heroes?populate=Banner`);
-const { data } = await response.json();
+let optimizedImage = null;
+let heading = heroDefaults.heading;
+let subheading = heroDefaults.subheading;
+let buttonText = heroDefaults.buttonText;
+let buttonUrl = heroDefaults.buttonUrl;
+let buttonEnabled = heroDefaults.buttonEnabled;
+let buttonText2 = heroDefaults.buttonText2;
+let buttonUrl2 = heroDefaults.buttonUrl2;
+let buttonEnabled2 = heroDefaults.buttonEnabled2;
 
-const publicHero = data[0];
+const result = await fetchAPI("hero?populate=Banner");
+const data = result?.data;
 
-const imageUrl = publicHero.attributes.Banner.data.attributes.url;
+if (data?.attributes) {
+  const attrs = data.attributes;
 
-const optimizedImage = await getImage({
-	src: imageUrl,
-	width: 1600,
-	height: 900,
-	format: "webp",
-});
+  if (attrs.heading) heading = marked.parseInline(attrs.heading);
+  if (attrs.subheading) subheading = marked.parseInline(attrs.subheading);
+  if (attrs.buttonText) buttonText = attrs.buttonText;
+  if (attrs.buttonUrl) buttonUrl = attrs.buttonUrl;
+  if (typeof attrs.buttonEnabled === "boolean") buttonEnabled = attrs.buttonEnabled;
+  if (attrs.buttonText2) buttonText2 = attrs.buttonText2;
+  if (attrs.buttonUrl2) buttonUrl2 = attrs.buttonUrl2;
+  if (typeof attrs.buttonEnabled2 === "boolean") buttonEnabled2 = attrs.buttonEnabled2;
+
+  if (attrs.Banner?.data?.attributes?.url) {
+    const imageUrl = getImageUrl(attrs.Banner.data.attributes.url);
+    optimizedImage = await getImage({
+      src: imageUrl,
+      width: 1600,
+      height: 900,
+      format: "webp",
+    });
+  }
+}
 ---
 
-<head>
-	<link
-		rel="preload"
-		as="image"
-		href={`${PUBLIC_IMAGE_URL + optimizedImage.src}`}
-	/>
-</head>
+{
+  optimizedImage && (
+    <head>
+      <link
+        rel="preload"
+        as="image"
+        href={optimizedImage.src}
+      />
+    </head>
+  )
+}
 
 <section
-	id="hero"
-	class="hero min-h-screen bg-cover bg-center flex items-center justify-center text-center relative"
-	style={`background-image: url('${PUBLIC_IMAGE_URL + optimizedImage.src}');`}
+  id="hero"
+  class="hero min-h-screen bg-cover bg-center flex items-center justify-center text-center relative"
+  style={optimizedImage
+    ? `background-image: url('${optimizedImage.src}');`
+    : "background: linear-gradient(to right, #182416, #2d3b28);"}
 >
-	<div
-		class="absolute inset-0 bg-gradient-to-r from-black to-[#182416] opacity-50"
-	>
-	</div>
-	<div
-		class="hero-content"
-		data-aos="fade-up"
-		data-aos-duration="750"
-		data-aos-once="true"
-	>
-		<div
-			class="bg-gradient-to-r from-[#6ff0b0] to-[#28e684] p-8 sm:p-10 rounded-xl opacity-95 m-4"
-		>
-			<h1 class="text-5xl font-semibold mb-2 text-gray-700">
-				Welcome to <span class="font-extrabold">GeoSolutions</span>
-			</h1>
-			<h2 class="text-xl mb-6 text-gray-600">Geotechnical Specialists</h2>
+  <div
+    class="absolute inset-0 bg-gradient-to-r from-black to-[#182416] opacity-50"
+  >
+  </div>
+  <div
+    class="hero-content"
+    data-aos="fade-up"
+    data-aos-duration="750"
+    data-aos-once="true"
+  >
+    <div
+      class="bg-gradient-to-r from-[#6ff0b0] to-[#28e684] p-8 sm:p-10 rounded-xl opacity-95 m-4"
+    >
+      <h1
+        class="text-5xl font-semibold mb-2 text-gray-700 hero-heading"
+        set:html={heading}
+      />
+      <h2
+        class="text-xl mb-6 text-gray-600 hero-subheading"
+        set:html={subheading}
+      />
 
-			<a
-				href="#about"
-				class="btn btn-neutral hover:bg-white hover:scale-105
-			rounded-full border-2 border-primary px-8 text-primary"
-				>Get Started
-			</a>
-		</div>
-	</div>
+      <div class="flex flex-wrap justify-center gap-4">
+        {
+          buttonEnabled && (
+            <a
+              href={buttonUrl}
+              class="btn btn-neutral hover:bg-white hover:scale-105
+            rounded-full border-2 border-primary px-8 text-primary"
+            >
+              {buttonText}
+            </a>
+          )
+        }
+        {
+          buttonEnabled2 && buttonText2 && (
+            <a
+              href={buttonUrl2}
+              class="btn btn-outline hover:bg-primary hover:scale-105
+            rounded-full border-2 border-gray-600 px-8 text-gray-600 hover:text-white hover:border-primary"
+            >
+              {buttonText2}
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </div>
 </section>
+
+<style>
+  .hero-heading :global(strong),
+  .hero-heading :global(b) {
+    font-weight: 800;
+  }
+  .hero-heading :global(em),
+  .hero-heading :global(i) {
+    font-style: italic;
+  }
+  .hero-subheading :global(strong),
+  .hero-subheading :global(b) {
+    font-weight: 700;
+  }
+</style>

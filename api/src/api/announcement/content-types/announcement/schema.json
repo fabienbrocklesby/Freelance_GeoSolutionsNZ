@@ -1,0 +1,41 @@
+{
+  "kind": "singleType",
+  "collectionName": "announcement",
+  "info": {
+    "singularName": "announcement",
+    "pluralName": "announcements",
+    "displayName": "Announcement Banner",
+    "description": "Global announcement banner for promotional messages, holiday closures, or warnings"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "enabled": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "message": {
+      "type": "text",
+      "required": true
+    },
+    "linkText": {
+      "type": "string"
+    },
+    "linkUrl": {
+      "type": "string"
+    },
+    "backgroundColor": {
+      "type": "enumeration",
+      "enum": ["info", "warning", "error", "success"],
+      "default": "info"
+    },
+    "dismissible": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    }
+  }
+}

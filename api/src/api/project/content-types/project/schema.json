@@ -17,7 +17,7 @@
       "required": true
     },
     "description": {
-      "type": "text",
+      "type": "richtext",
       "required": true
     },
     "thumbnail": {
@@ -58,6 +58,11 @@
     },
     "endDate": {
       "type": "date"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
     }
   }
 }

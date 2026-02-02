@@ -1,7 +1,5 @@
-# Use a Node.js image with Alpine for a smaller footprint
-FROM node:20.15.1-alpine
+FROM node:20-alpine AS builder
 
-# Install required packages for building native dependencies
 RUN apk update && apk add --no-cache \
   build-base \
   gcc \
@@ -13,33 +11,41 @@ RUN apk update && apk add --no-cache \
   bash \
   vips-dev \
   git \
-  python3 \
-  py3-pip
+  python3
 
-# Set environment variables
-ARG NODE_ENV=development
-ENV NODE_ENV=${NODE_ENV}
-ENV PATH /opt/node_modules/.bin:$PATH
+WORKDIR /opt
 
-# Set working directory and copy package files
-WORKDIR /opt/
-COPY package.json package-lock.json ./
+COPY package*.json ./
+RUN npm ci
 
-# Install global dependencies
-RUN npm install -g node-gyp
-
-# Install local dependencies
-RUN npm config set fetch-retry-maxtimeout 600000 -g && npm install
-
-# Set working directory for the application
 WORKDIR /opt/app
 COPY . .
 
-# Fix file permissions and run build
-RUN chown -R node:node /opt/app
-USER node
 RUN npm run build
 
-# Expose the port and define the start command
+FROM node:20-alpine AS runtime
+
+RUN apk add --no-cache vips
+
+RUN addgroup -g 1001 -S nodejs && adduser -S strapi -u 1001
+
+WORKDIR /opt/app
+
+COPY --from=builder --chown=strapi:nodejs /opt/node_modules ./node_modules
+COPY --from=builder --chown=strapi:nodejs /opt/app/dist ./dist
+COPY --from=builder --chown=strapi:nodejs /opt/app/public ./public
+COPY --from=builder --chown=strapi:nodejs /opt/app/config ./config
+COPY --from=builder --chown=strapi:nodejs /opt/app/src ./src
+COPY --from=builder --chown=strapi:nodejs /opt/app/package.json ./
+COPY --from=builder --chown=strapi:nodejs /opt/app/favicon.png ./
+
+RUN mkdir -p /opt/app/public/uploads && chown -R strapi:nodejs /opt/app/public/uploads
+
+USER strapi
+
+ENV NODE_ENV=production
+ENV PATH=/opt/app/node_modules/.bin:$PATH
+
 EXPOSE 1337
-CMD ["npm", "run", "develop"]
+
+CMD ["npm", "start"]

@@ -1,71 +1,89 @@
-version: '3'
-
 services:
   postgres:
-    image: postgres:16
+    image: postgres:16-alpine
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: strapi
-      POSTGRES_USER: strapi
-      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
-      - strapi
+      - internal
 
   strapi:
-    container_name: strapi
     build:
       context: ./api
       dockerfile: Dockerfile
-    image: strapi:latest
     restart: unless-stopped
     env_file: .env
     environment:
-      DATABASE_CLIENT: ${DATABASE_CLIENT}
-      DATABASE_HOST: ${DATABASE_HOST}
-      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USERNAME: ${DATABASE_USERNAME}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      API_TOKEN_SALT: ${API_TOKEN_SALT}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
       APP_KEYS: ${APP_KEYS}
-      NODE_ENV: ${NODE_ENV}
+      NODE_ENV: production
       SENDGRID_API_KEY: ${SENDGRID_API_KEY}
     volumes:
-      - ./api/config:/opt/app/config
-      - ./api/src:/opt/app/src
-      - ./api/package.json:/opt/package.json
-      - ./api/yarn.lock:/opt/yarn.lock
-      - ./api/public/uploads:/opt/app/public/uploads
-    ports:
-      - "1337:1337"
-    networks:
-      - strapi
+      - strapi-uploads:/opt/app/public/uploads
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:1337/_health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    networks:
+      - internal
 
-  astro-app:
+  astro:
     build:
       context: ./client
       dockerfile: Dockerfile
-    env_file: ./client/.env
+      args:
+        PUBLIC_API_URL: ${PUBLIC_API_URL}
+        PUBLIC_IMAGE_URL: ${PUBLIC_IMAGE_URL}
+        PUBLIC_SITE_URL: ${PUBLIC_SITE_URL}
+    restart: unless-stopped
     environment:
       PUBLIC_API_URL: http://strapi:1337
-      PUBLIC_IMAGE_URL: http://localhost:1337
-      PUBLIC_FILE_URL: http://localhost:1337
-    ports:
-      - "4321:4321"
+      PUBLIC_IMAGE_URL: ${PUBLIC_IMAGE_URL}
+      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL}
     depends_on:
-      - postgres
-    networks:
       - strapi
+    networks:
+      - internal
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - astro
+      - strapi
+    networks:
+      - internal
 
 volumes:
   postgres-data:
+  strapi-uploads:
 
 networks:
-  strapi:
+  internal:
     driver: bridge

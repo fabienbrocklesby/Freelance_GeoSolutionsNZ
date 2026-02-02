@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_content_service_items",
+  "info": {
+    "displayName": "Service Item",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true,
+      "maxLength": 200
+    }
+  }
+}

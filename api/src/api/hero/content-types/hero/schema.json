@@ -1,5 +1,5 @@
 {
-  "kind": "collectionType",
+  "kind": "singleType",
   "collectionName": "heroes",
   "info": {
     "singularName": "hero",
@@ -20,6 +20,32 @@
       ],
       "type": "media",
       "multiple": false
+    },
+    "heading": {
+      "type": "richtext"
+    },
+    "subheading": {
+      "type": "richtext"
+    },
+    "buttonText": {
+      "type": "string"
+    },
+    "buttonUrl": {
+      "type": "string"
+    },
+    "buttonEnabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "buttonText2": {
+      "type": "string"
+    },
+    "buttonUrl2": {
+      "type": "string"
+    },
+    "buttonEnabled2": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

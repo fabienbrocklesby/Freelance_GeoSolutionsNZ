@@ -1,0 +1,152 @@
+---
+import { fetchAPI, getImageUrl } from "../lib/api.js";
+import { marked } from "marked";
+
+const data = await fetchAPI(
+  "testimonials?populate=avatar&filters[featured][$eq]=true"
+);
+
+const testimonials = data?.data?.map((item) => ({
+  id: item.id,
+  quote: item.attributes.quote ? marked.parse(item.attributes.quote) : "",
+  author: item.attributes.author,
+  company: item.attributes.company,
+  avatarUrl: getImageUrl(item.attributes.avatar?.data?.attributes?.url),
+  projectId: item.attributes.project?.data?.id || null,
+  projectTitle: item.attributes.project?.data?.attributes?.title || null,
+})) || [];
+
+function getInitials(name) {
+  return name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}
+---
+
+{
+  testimonials.length > 0 && (
+    <section
+      id="testimonials"
+      class="py-16 flex flex-col items-center px-4 sm:px-8 md:px-12 lg:px-20 xl:px-40"
+      data-aos="fade-up"
+      data-aos-duration="750"
+      data-aos-once="true"
+    >
+      <h2 class="text-3xl font-semibold text-center mb-8 text-gray-600">
+        What Our Clients Say
+      </h2>
+      <div class="max-w-screen-lg w-full">
+        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+          {testimonials.map((testimonial, index) => (
+            <div class="card bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col">
+              <div class="card-body flex flex-col h-full p-6">
+                <div class="flex-grow mb-6">
+                  <div class="text-5xl text-primary opacity-20 font-serif leading-none -mb-3">
+                    "
+                  </div>
+                  <div class={`testimonial-quote-${index}`}>
+                    <div
+                      class="text-gray-700 text-base leading-relaxed pl-1 quote-text prose prose-sm"
+                      set:html={testimonial.quote}
+                    />
+                  </div>
+                </div>
+                <div class="mt-auto pt-4 border-t border-gray-200">
+                  <div class="flex items-center gap-3 mb-3">
+                    {testimonial.avatarUrl ? (
+                      <div class="avatar">
+                        <div class="w-12 h-12 rounded-full">
+                          <img
+                            src={testimonial.avatarUrl}
+                            alt={testimonial.author}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div class="avatar placeholder">
+                        <div class="bg-neutral text-neutral-content w-12 h-12 rounded-full">
+                          <span class="text-sm">
+                            {getInitials(testimonial.author)}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    <div class="flex-1 min-w-0">
+                      <p class="font-semibold text-gray-800 truncate">
+                        {testimonial.author}
+                      </p>
+                      {testimonial.company && (
+                        <p class="text-sm text-gray-500 truncate">
+                          {testimonial.company}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  {testimonial.projectId && (
+                    <a
+                      href={`/projects/${testimonial.projectId}`}
+                      class="text-primary hover:text-primary-focus text-sm font-medium flex items-center gap-1 group"
+                    >
+                      <span>View Related Project</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4 group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const quotes = document.querySelectorAll(".quote-text");
+
+    quotes.forEach((quote, index) => {
+      const container = quote.closest(`.testimonial-quote-${index}`);
+      const button = container?.querySelector(".read-more-btn");
+
+      if (button && quote.textContent && quote.textContent.length > 150) {
+        const fullText = quote.textContent;
+        const truncatedText = fullText.substring(0, 150) + "...";
+
+        quote.textContent = truncatedText;
+
+        button.addEventListener("click", () => {
+          if (quote.textContent === truncatedText) {
+            quote.textContent = fullText;
+            button.textContent = "Read less";
+          } else {
+            quote.textContent = truncatedText;
+            button.textContent = "Read more";
+          }
+        });
+      }
+    });
+  });
+</script>
+
+<style>
+  .quote-text {
+    transition: all 0.3s ease;
+  }
+</style>
