@@ -48,11 +48,11 @@ services:
     expose:
       - "1337"
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:1337/_health"]
-      interval: 30s
+      test: ["CMD-SHELL", "node -e \"const http=require('http');const r=http.get('http://localhost:1337/_health',res=>{process.exit(res.statusCode===204?0:1)});r.on('error',()=>process.exit(1));r.setTimeout(5000,()=>{r.destroy();process.exit(1)})\""]
+      interval: 15s
       timeout: 10s
-      retries: 3
-      start_period: 60s
+      retries: 8
+      start_period: 90s
     depends_on:
       postgres:
         condition: service_healthy
