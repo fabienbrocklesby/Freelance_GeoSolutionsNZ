@@ -25,7 +25,7 @@ RUN npm run build
 
 FROM node:20-alpine AS runtime
 
-RUN apk add --no-cache vips
+RUN apk add --no-cache vips vips-cpp
 
 RUN addgroup -g 1001 -S nodejs && adduser -S strapi -u 1001
 
