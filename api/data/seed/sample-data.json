@@ -1,0 +1,79 @@
+{
+  "version": 2,
+  "data": {
+    "api::hero.hero": [
+      {
+        "id": 1,
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "Banner": {
+          "name": "hero-banner.jpg",
+          "alternativeText": "GeoSolutions Hero Banner",
+          "caption": "",
+          "width": 1920,
+          "height": 1080,
+          "url": "/uploads/hero_banner_sample.jpg"
+        }
+      }
+    ],
+    "api::team.team": [
+      {
+        "id": 1,
+        "name": "John Smith",
+        "role": "Principal Geotechnical Engineer",
+        "email": "john@geosolutions.example.com",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "image": {
+          "name": "team-member-1.jpg",
+          "alternativeText": "John Smith",
+          "url": "/uploads/team_member_sample.jpg"
+        }
+      },
+      {
+        "id": 2,
+        "name": "Sarah Johnson",
+        "role": "Senior Project Manager",
+        "email": "sarah@geosolutions.example.com",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "image": {
+          "name": "team-member-2.jpg",
+          "alternativeText": "Sarah Johnson",
+          "url": "/uploads/team_member_sample.jpg"
+        }
+      }
+    ],
+    "api::project.project": [
+      {
+        "id": 1,
+        "title": "Sample Geotechnical Project",
+        "description": "This is a sample project demonstrating ground stabilization techniques. The project involved comprehensive soil analysis and implementation of advanced foundation solutions.",
+        "startDate": "2023-06-01",
+        "endDate": "2023-12-15",
+        "publishedAt": "2024-01-01T00:00:00.000Z",
+        "thumbnail": {
+          "name": "project-thumbnail.jpg",
+          "alternativeText": "Project Thumbnail",
+          "url": "/uploads/project_sample.jpg"
+        },
+        "beforePhoto": {
+          "name": "project-before.jpg",
+          "alternativeText": "Before Photo",
+          "url": "/uploads/project_before_sample.jpg"
+        },
+        "afterPhoto": {
+          "name": "project-after.jpg",
+          "alternativeText": "After Photo",
+          "url": "/uploads/project_after_sample.jpg"
+        }
+      }
+    ],
+    "api::document.document": [
+      {
+        "id": 1,
+        "title": "Sample Technical Guide",
+        "description": "A comprehensive guide to geotechnical best practices and standards.",
+        "url": "https://example.com/sample-document",
+        "publishedAt": "2024-01-01T00:00:00.000Z"
+      }
+    ]
+  }
+}

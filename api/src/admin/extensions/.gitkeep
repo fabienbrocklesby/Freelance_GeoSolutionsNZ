@@ -1,0 +1,31 @@
+# Logo files needed in this directory:
+
+#
+
+# 1. logo.png - Main sidebar logo
+
+# Use your actual logo proportions (e.g., 244x121 or scaled up: 488x242, 732x363)
+
+# Higher resolution recommended for retina displays
+
+#
+
+# 2. auth-logo.png - Login page logo
+
+# Use your actual logo proportions (e.g., 488x242, 732x363, or 976x484)
+
+# Can be same as logo.png or a larger variant
+
+#
+
+# 3. favicon.png - Browser favicon
+
+# Recommended: 192x192px or 512x512px square
+
+# Strapi will scale down as needed
+
+#
+
+# Please add these GeoSolutions branded image files manually.
+
+# PNG format with transparent backgrounds recommended.

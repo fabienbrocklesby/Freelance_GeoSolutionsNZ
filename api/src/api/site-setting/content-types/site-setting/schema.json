@@ -1,0 +1,31 @@
+{
+  "kind": "singleType",
+  "collectionName": "site_settings",
+  "info": {
+    "singularName": "site-setting",
+    "pluralName": "site-settings",
+    "displayName": "Site Setting"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "footerTagline": {
+      "type": "text",
+      "required": true
+    },
+    "phoneNumber": {
+      "type": "string"
+    },
+    "primaryEmail": {
+      "type": "email"
+    },
+    "secondaryEmail": {
+      "type": "email"
+    },
+    "address": {
+      "type": "text"
+    }
+  }
+}

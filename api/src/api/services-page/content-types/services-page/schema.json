@@ -1,0 +1,24 @@
+{
+  "kind": "singleType",
+  "collectionName": "services_page",
+  "info": {
+    "singularName": "services-page",
+    "pluralName": "services-pages",
+    "displayName": "Services Page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "introText": {
+      "type": "richtext",
+      "required": true
+    },
+    "serviceItems": {
+      "type": "component",
+      "repeatable": true,
+      "component": "content.service-item"
+    }
+  }
+}

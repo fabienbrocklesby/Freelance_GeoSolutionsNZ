@@ -27,8 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		formData.append("data", JSON.stringify(data));
 
-		console.log(fileInput.name);
-
 		fetch(`${apiUrl}/api/emails`, {
 			method: "POST",
 			body: formData,

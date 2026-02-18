@@ -788,6 +788,79 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiAboutAbout extends Schema.SingleType {
+  collectionName: 'about';
+  info: {
+    singularName: 'about';
+    pluralName: 'abouts';
+    displayName: 'About';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    content: Attribute.RichText & Attribute.Required;
+    seo: Attribute.Component<'shared.seo'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::about.about',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::about.about',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiAnnouncementAnnouncement extends Schema.SingleType {
+  collectionName: 'announcement';
+  info: {
+    singularName: 'announcement';
+    pluralName: 'announcements';
+    displayName: 'Announcement Banner';
+    description: 'Global announcement banner for promotional messages, holiday closures, or warnings';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    enabled: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<false>;
+    message: Attribute.Text & Attribute.Required;
+    linkText: Attribute.String;
+    linkUrl: Attribute.String;
+    backgroundColor: Attribute.Enumeration<
+      ['info', 'warning', 'error', 'success']
+    > &
+      Attribute.DefaultTo<'info'>;
+    dismissible: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<true>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::announcement.announcement',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::announcement.announcement',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiDocumentDocument extends Schema.CollectionType {
   collectionName: 'documents';
   info: {
@@ -804,6 +877,7 @@ export interface ApiDocumentDocument extends Schema.CollectionType {
     description: Attribute.Text;
     file: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     url: Attribute.String;
+    seo: Attribute.Component<'shared.seo'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -858,7 +932,7 @@ export interface ApiEmailEmail extends Schema.CollectionType {
   };
 }
 
-export interface ApiHeroHero extends Schema.CollectionType {
+export interface ApiHeroHero extends Schema.SingleType {
   collectionName: 'heroes';
   info: {
     singularName: 'hero';
@@ -870,6 +944,14 @@ export interface ApiHeroHero extends Schema.CollectionType {
   };
   attributes: {
     Banner: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    heading: Attribute.RichText;
+    subheading: Attribute.RichText;
+    buttonText: Attribute.String;
+    buttonUrl: Attribute.String;
+    buttonEnabled: Attribute.Boolean & Attribute.DefaultTo<true>;
+    buttonText2: Attribute.String;
+    buttonUrl2: Attribute.String;
+    buttonEnabled2: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -893,12 +975,13 @@ export interface ApiProjectProject extends Schema.CollectionType {
   };
   attributes: {
     title: Attribute.String & Attribute.Required;
-    description: Attribute.Text & Attribute.Required;
+    description: Attribute.RichText & Attribute.Required;
     thumbnail: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     beforePhoto: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     afterPhoto: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     startDate: Attribute.Date;
     endDate: Attribute.Date;
+    seo: Attribute.Component<'shared.seo'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -910,6 +993,70 @@ export interface ApiProjectProject extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::project.project',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiServicesPageServicesPage extends Schema.SingleType {
+  collectionName: 'services_page';
+  info: {
+    singularName: 'services-page';
+    pluralName: 'services-pages';
+    displayName: 'Services Page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    introText: Attribute.RichText & Attribute.Required;
+    serviceItems: Attribute.Component<'content.service-item', true>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::services-page.services-page',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::services-page.services-page',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSiteSettingSiteSetting extends Schema.SingleType {
+  collectionName: 'site_settings';
+  info: {
+    singularName: 'site-setting';
+    pluralName: 'site-settings';
+    displayName: 'Site Setting';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    footerTagline: Attribute.Text & Attribute.Required;
+    phoneNumber: Attribute.String;
+    primaryEmail: Attribute.Email;
+    secondaryEmail: Attribute.Email;
+    address: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::site-setting.site-setting',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::site-setting.site-setting',
       'oneToOne',
       'admin::user'
     > &
@@ -933,12 +1080,69 @@ export interface ApiTeamTeam extends Schema.CollectionType {
     role: Attribute.String;
     image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     email: Attribute.Email;
+    bio: Attribute.RichText;
+    order: Attribute.Integer &
+      Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Attribute.DefaultTo<0>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'> &
       Attribute.Private;
     updatedBy: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTestimonialTestimonial extends Schema.CollectionType {
+  collectionName: 'testimonials';
+  info: {
+    singularName: 'testimonial';
+    pluralName: 'testimonials';
+    displayName: 'Testimonial';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    quote: Attribute.RichText & Attribute.Required;
+    author: Attribute.String & Attribute.Required;
+    company: Attribute.String;
+    image: Attribute.Media<'images'>;
+    order: Attribute.Integer &
+      Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Attribute.DefaultTo<0>;
+    featured: Attribute.Boolean & Attribute.DefaultTo<false>;
+    project: Attribute.Relation<
+      'api::testimonial.testimonial',
+      'manyToOne',
+      'api::project.project'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::testimonial.testimonial',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::testimonial.testimonial',
+      'oneToOne',
+      'admin::user'
+    > &
       Attribute.Private;
   };
 }
@@ -961,11 +1165,16 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::about.about': ApiAboutAbout;
+      'api::announcement.announcement': ApiAnnouncementAnnouncement;
       'api::document.document': ApiDocumentDocument;
       'api::email.email': ApiEmailEmail;
       'api::hero.hero': ApiHeroHero;
       'api::project.project': ApiProjectProject;
+      'api::services-page.services-page': ApiServicesPageServicesPage;
+      'api::site-setting.site-setting': ApiSiteSettingSiteSetting;
       'api::team.team': ApiTeamTeam;
+      'api::testimonial.testimonial': ApiTestimonialTestimonial;
     }
   }
 }

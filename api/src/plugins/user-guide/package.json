@@ -1,0 +1,17 @@
+{
+  "name": "user-guide",
+  "version": "1.0.0",
+  "description": "Admin user guide documentation plugin for GeoSolutions CMS",
+  "strapi": {
+    "name": "user-guide",
+    "description": "Displays admin user documentation within the Strapi dashboard",
+    "kind": "plugin",
+    "displayName": "User Guide"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "@strapi/strapi": "^4.0.0"
+  },
+  "author": "GeoSolutions",
+  "license": "MIT"
+}

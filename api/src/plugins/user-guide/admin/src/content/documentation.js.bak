@@ -1,0 +1,1025 @@
+import React from 'react';
+import {
+  Box,
+  Flex,
+  Typography,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Td,
+  Th,
+  Badge,
+  Alert,
+  Divider,
+  Accordion,
+  AccordionToggle,
+  AccordionContent,
+  AccordionGroup,
+} from '@strapi/design-system';
+import styled from 'styled-components';
+
+// Styled components
+const Tip = styled(Box)`
+  background: ${({ theme }) => theme.colors.primary100};
+  border-left: 4px solid ${({ theme }) => theme.colors.primary600};
+  padding: 12px 16px;
+  border-radius: 0 4px 4px 0;
+  margin: 16px 0;
+`;
+
+const Warning = styled(Box)`
+  background: ${({ theme }) => theme.colors.warning100};
+  border-left: 4px solid ${({ theme }) => theme.colors.warning600};
+  padding: 12px 16px;
+  border-radius: 0 4px 4px 0;
+  margin: 16px 0;
+`;
+
+const Danger = styled(Box)`
+  background: ${({ theme }) => theme.colors.danger100};
+  border-left: 4px solid ${({ theme }) => theme.colors.danger600};
+  padding: 12px 16px;
+  border-radius: 0 4px 4px 0;
+  margin: 16px 0;
+`;
+
+const CodeBlock = styled(Box)`
+  background: ${({ theme }) => theme.colors.neutral100};
+  border: 1px solid ${({ theme }) => theme.colors.neutral200};
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-family: monospace;
+  font-size: 13px;
+  overflow-x: auto;
+`;
+
+const StepNumber = styled(Box)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.primary600};
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 12px;
+  flex-shrink: 0;
+`;
+
+const StepItem = styled(Flex)`
+  padding: 12px 0;
+  align-items: flex-start;
+`;
+
+const ChecklistBox = styled(Box)`
+  background: ${({ theme }) => theme.colors.neutral100};
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+`;
+
+const ChecklistItem = styled(Flex)`
+  padding: 8px 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.neutral200};
+  
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const ContentCard = styled(Box)`
+  background: ${({ theme }) => theme.colors.neutral0};
+  border: 1px solid ${({ theme }) => theme.colors.neutral200};
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+`;
+
+// ============ SECTION COMPONENTS ============
+
+// Getting Started Section
+const GettingStartedSection = ({ highlightText, searchQuery }) => (
+  <Box>
+    <Typography variant="delta" as="h3">Accessing the Admin Panel</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <Typography>To log in and manage your website, go to this web address in your browser:</Typography>
+      <CodeBlock marginTop={2}>
+        <Typography fontWeight="bold">https://admin.geosolutions.nz</Typography>
+      </CodeBlock>
+      <Tip>
+        <Typography><strong>Tip:</strong> Bookmark this page so you can easily find it later!</Typography>
+      </Tip>
+    </Box>
+
+    <Typography variant="delta" as="h3">How to Log In</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <StepItem>
+        <StepNumber>1</StepNumber>
+        <Typography>Open your web browser (Chrome, Safari, Firefox, or Edge)</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>2</StepNumber>
+        <Typography>Type <strong>admin.geosolutions.nz</strong> in the address bar at the top</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>3</StepNumber>
+        <Typography>You'll see a login page. Type in your work email address</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>4</StepNumber>
+        <Typography>Type in your password (you should have received this from your manager)</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>5</StepNumber>
+        <Typography>Click the green <strong>"Login"</strong> button</Typography>
+      </StepItem>
+      <Warning>
+        <Typography><strong>Forgot your password?</strong> Don't try to reset it yourself. Contact your manager and they will reset it for you.</Typography>
+      </Warning>
+    </Box>
+
+    <Typography variant="delta" as="h3">What You'll See After Login</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <Typography>Once logged in, you'll see the main screen (called the "dashboard"). Think of this like the control panel for your website.</Typography>
+      <Box paddingTop={3}>
+        <Typography variant="epsilon">On the left side, you'll see a menu with these sections:</Typography>
+        <ul style={{ paddingLeft: '20px', marginTop: '8px' }}>
+          <li><Typography><strong>Content Manager</strong> - This is where you'll spend most of your time. It's where you edit text, add photos, and update the website.</Typography></li>
+          <li><Typography><strong>Media Library</strong> - This is like a photo album where all your uploaded pictures and files are stored.</Typography></li>
+        </ul>
+      </Box>
+    </Box>
+
+    <Typography variant="delta" as="h3">⚠️ IMPORTANT: What NOT to Click</Typography>
+    <Box paddingTop={3}>
+      <Danger>
+        <Typography fontWeight="bold" paddingBottom={2}>DO NOT click on these sections - they can break the website:</Typography>
+        <ul style={{ paddingLeft: '20px', marginTop: '8px' }}>
+          <li><Typography><strong>Content-Type Builder</strong> - This changes how the website is built. Only developers should use this.</Typography></li>
+          <li><Typography><strong>Settings</strong> (at the bottom of the menu) - Only your manager should change these.</Typography></li>
+          <li><Typography><strong>Roles</strong> - This controls who can access what. Don't change this.</Typography></li>
+          <li><Typography><strong>Plugins</strong> - These are tools that add features. Don't install or remove anything.</Typography></li>
+          <li><Typography><strong>Marketplace</strong> - Don't download or install anything from here.</Typography></li>
+        </ul>
+      </Danger>
+      <Tip>
+        <Typography><strong>Simple rule:</strong> Stick to <strong>Content Manager</strong> and <strong>Media Library</strong>. That's all you need to update the website!</Typography>
+      </Tip>
+    </Box>
+
+    <Typography variant="delta" as="h3">Understanding the Menu</Typography>
+    <Box paddingTop={3}>
+      <Typography>Here's what each section you WILL use does:</Typography>
+      <Box paddingTop={3}>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th><Typography variant="sigma">Section</Typography></Th>
+              <Th><Typography variant="sigma">What It's For</Typography></Th>
+              <Th><Typography variant="sigma">Safe to Use?</Typography></Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <Td><Typography fontWeight="bold">Content Manager</Typography></Td>
+              <Td><Typography>Edit website text, add photos, update projects</Typography></Td>
+              <Td><Badge active>✓ YES - Use this!</Badge></Td>
+            </Tr>
+            <Tr>
+              <Td><Typography fontWeight="bold">Media Library</Typography></Td>
+              <Td><Typography>View and manage all photos and files</Typography></Td>
+              <Td><Badge active>✓ YES - Use this!</Badge></Td>
+            </Tr>
+            <Tr>
+              <Td><Typography fontWeight="bold">📚 User Guide</Typography></Td>
+              <Td><Typography>This guide you're reading right now!</Typography></Td>
+              <Td><Badge active>✓ YES - Read this anytime!</Badge></Td>
+            </Tr>
+            <Tr>
+              <Td><Typography fontWeight="bold">Content-Type Builder</Typography></Td>
+              <Td><Typography>Changes website structure</Typography></Td>
+              <Td><Badge textColor="danger600" backgroundColor="danger100">✗ NO - Don't touch!</Badge></Td>
+            </Tr>
+            <Tr>
+              <Td><Typography fontWeight="bold">Settings</Typography></Td>
+              <Td><Typography>System configuration</Typography></Td>
+              <Td><Badge textColor="danger600" backgroundColor="danger100">✗ NO - Manager only!</Badge></Td>
+            </Tr>
+          </Tbody>
+        </Table>
+      </Box>
+    </Box>
+  </Box>
+);
+
+// Content Types Section
+const ContentTypesSection = ({ highlightText, searchQuery, toggleAccordion, expandedSections }) => {
+  const contentTypes = [
+    {
+      id: 'about',
+      name: 'About',
+      purpose: 'The "About Us" section on your homepage - tells visitors about your company',
+      contains: ['Company description and history', 'What makes GeoSolutions special'],
+      appears: 'Homepage - About section',
+      explanation: 'This is the text that tells visitors who you are and what you do.',
+    },
+    {
+      id: 'services',
+      name: 'Services Page',
+      purpose: 'Lists all the services GeoSolutions offers (like landscaping, irrigation, etc.)',
+      contains: ['Introduction about your services', 'Each service with a title and description'],
+      appears: 'Services page',
+      explanation: 'Update this when you add new services or change what you offer.',
+    },
+    {
+      id: 'settings',
+      name: 'Site Setting',
+      purpose: 'Important contact information that shows everywhere on the website',
+      contains: ['Company phone number', 'Email address', 'Physical address', 'Footer text'],
+      appears: 'Footer (bottom) of every page',
+      explanation: 'This is like your website\'s business card - it shows your contact info.',
+    },
+    {
+      id: 'hero',
+      name: 'Hero',
+      purpose: 'The big banner image at the top of your homepage - first thing visitors see',
+      contains: ['Large background photo', 'Main headline text'],
+      appears: 'Top of homepage',
+      explanation: 'Think of this as your website\'s welcome sign. Make it eye-catching!',
+    },
+    {
+      id: 'team',
+      name: 'Team',
+      purpose: 'Staff profiles showing who works at GeoSolutions',
+      contains: ['Employee name', 'Job title', 'Photo', 'Short bio', 'Order (who appears first)'],
+      appears: 'Team page',
+      explanation: 'Add new employees here or remove people who have left.',
+    },
+    {
+      id: 'projects',
+      name: 'Projects',
+      purpose: 'Your portfolio - shows off completed landscaping jobs',
+      contains: ['Project name', 'Description', 'Before and after photos', 'Location', 'Date', 'Order'],
+      appears: 'Projects/Portfolio page',
+      explanation: 'Add new projects to show potential customers what you\'ve done.',
+    },
+    {
+      id: 'documents',
+      name: 'Documents',
+      purpose: 'Downloadable files for customers (brochures, guides, etc.)',
+      contains: ['File title', 'Description', 'PDF or Word file'],
+      appears: 'Resources section',
+      explanation: 'Upload files that customers can download.',
+    },
+    {
+      id: 'testimonials',
+      name: 'Testimonials',
+      purpose: 'Customer reviews and happy client feedback',
+      contains: ['Customer name', 'Their quote/review', 'Photo (optional)', 'Order'],
+      appears: 'Homepage testimonials section',
+      explanation: 'Add positive reviews from happy customers to build trust.',
+    },
+  ];
+
+  return (
+    <Box>
+      <Typography paddingBottom={2}>Think of these as different folders for your website content. Each one controls a different part of the website.</Typography>
+      <Tip>
+        <Typography><strong>How to find these:</strong> Go to <strong>Content Manager</strong> in the left menu, then click on the type you want to edit.</Typography>
+      </Tip>
+      <Box paddingTop={4}>
+      <AccordionGroup>
+        {contentTypes.map((type) => (
+          <Accordion
+            key={type.id}
+            expanded={expandedSections[type.id]}
+            onToggle={() => toggleAccordion(type.id)}
+            id={`accordion-${type.id}`}
+            size="S"
+          >
+            <AccordionToggle
+              title={highlightText(type.name, searchQuery)}
+              description={type.purpose}
+            />
+            <AccordionContent>
+              <Box padding={4}>
+                <Typography variant="epsilon" paddingBottom={2}>{type.explanation}</Typography>
+                <Divider />
+                <Typography variant="delta" paddingTop={3}>What's inside:</Typography>
+                <Box paddingTop={2} paddingBottom={3}>
+                  <ul style={{ paddingLeft: '20px' }}>
+                    {type.contains.map((item, idx) => (
+                      <li key={idx}><Typography>{highlightText(item, searchQuery)}</Typography></li>
+                    ))}
+                  </ul>
+                </Box>
+                <Flex gap={2} alignItems="center">
+                  <Badge>Where visitors see it:</Badge>
+                  <Typography>{type.appears}</Typography>
+                </Flex>
+              </Box>
+            </AccordionContent>
+          </Accordion>
+        ))}
+      </AccordionGroup>
+    </Box>
+  );
+};
+
+// Editing Content Section
+const EditingContentSection = ({ highlightText, searchQuery }) => (
+  <Box>
+    <Tip>
+      <Typography><strong>Remember:</strong> You can't break anything by editing text or uploading photos. If you make a mistake, just change it back!</Typography>
+    </Tip>
+
+    <Typography variant="delta" as="h3">How to Edit Text (Simple Method)</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <Typography paddingBottom={2}>Want to change text on the website? Here's how:</Typography>
+      <StepItem>
+        <StepNumber>1</StepNumber>
+        <Typography>On the left side menu, click <strong>"Content Manager"</strong></Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>2</StepNumber>
+        <Typography>You'll see a list of content types. Click on the one you want to change (like "About" or "Services Page")</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>3</StepNumber>
+        <Typography>Click on the entry to open it (it will have a title or name)</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>4</StepNumber>
+        <Typography>You'll see text boxes. Click inside any box and type to change the text</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>5</StepNumber>
+        <Typography>Scroll down and click the green <strong>"Save"</strong> button at the bottom</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>6</StepNumber>
+        <Typography>Then click the green <strong>"Publish"</strong> button to make it live on the website</Typography>
+      </StepItem>
+      <Warning>
+        <Typography><strong>Important:</strong> Clicking "Save" alone won't update the website! You MUST click "Publish" for changes to go live.</Typography>
+      </Warning>
+    </Box>
+
+    <Typography variant="delta" as="h3">How to Add Photos</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <Typography paddingBottom={2}>Adding photos is easy! Follow these steps:</Typography>
+      <StepItem>
+        <StepNumber>1</StepNumber>
+        <Typography>Open the content you want to edit (follow steps 1-3 above)</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>2</StepNumber>
+        <Typography>Look for a box that says "Photo", "Image", or "Banner" - these are where pictures go</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>3</StepNumber>
+        <Typography>Click the box or the <strong>"Add new assets"</strong> button</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>4</StepNumber>
+        <Typography>A window will pop up. Click <strong>"From computer"</strong></Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>5</StepNumber>
+        <Typography>Find the photo on your computer and click it, then click "Open"</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>6</StepNumber>
+        <Typography>Wait a few seconds while it uploads - you'll see a small version of the photo appear</Typography>
+      </StepItem>
+      <StepItem>
+        <StepNumber>7</StepNumber>
+        <Typography>Scroll down and click <strong>"Save"</strong>, then <strong>"Publish"</strong></Typography>
+      </StepItem>
+      <Tip>
+        <Typography><strong>Quick tip:</strong> You can also drag a photo from your computer and drop it directly into the upload box!</Typography>
+      </Tip>
+    </Box>
+
+    <Typography variant="delta" as="h3">Changing the Order of Things</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <Typography paddingBottom={2}>Want a team member or project to appear first? Use the "Order" field:</Typography>
+      <ContentCard>
+        <Typography variant="epsilon">What is the "Order" field?</Typography>
+        <Typography paddingTop={2}>The "Order" field is a number that decides what shows up first on your website. Lower numbers appear first.</Typography>
+        <Box paddingTop={2}>
+          <Typography><strong>Example:</strong></Typography>
+          <ul style={{ paddingLeft: '20px', marginTop: '8px' }}>
+            <li><Typography>Order = 1 → Appears FIRST</Typography></li>
+            <li><Typography>Order = 2 → Appears second</Typography></li>
+            <li><Typography>Order = 10 → Appears tenth</Typography></li>
+          </ul>
+        </Box>
+      </ContentCard>
+      <Box paddingTop={3}>
+        <Typography paddingBottom={2}><strong>To change the order:</strong></Typography>
+        <StepItem>
+          <StepNumber>1</StepNumber>
+          <Typography>Open the item you want to move (team member, project, etc.)</Typography>
+        </StepItem>
+        <StepItem>
+          <StepNumber>2</StepNumber>
+          <Typography>Scroll down until you see a field called <strong>"Order"</strong></Typography>
+        </StepItem>
+        <StepItem>
+          <StepNumber>3</StepNumber>
+          <Typography>Type in a new number (smaller = appears sooner)</Typography>
+        </StepItem>
+        <StepItem>
+          <StepNumber>4</StepNumber>
+          <Typography>Click <strong>"Save"</strong> then <strong>"Publish"</strong></Typography>
+        </StepItem>
+      </Box>
+    </Box>
+
+    <Typography variant="delta" as="h3">Understanding Save vs Publish</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <Typography paddingBottom={3}>There are TWO buttons at the bottom of every page. Here's what they do:</Typography>
+      <Box paddingTop={3}>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th><Typography variant="sigma">Button</Typography></Th>
+              <Th><Typography variant="sigma">What It Does</Typography></Th>
+              <Th><Typography variant="sigma">When to Use It</Typography></Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <Td><Badge>Save</Badge></Td>
+              <Td><Typography>Saves your work but doesn't update the website</Typography></Td>
+              <Td><Typography>When you're not finished and want to come back later</Typography></Td>
+            </Tr>
+            <Tr>
+              <Td><Badge active>Publish</Badge></Td>
+              <Td><Typography>Makes your changes live on the website RIGHT NOW</Typography></Td>
+              <Td><Typography>When you're done and ready to show the world</Typography></Td>
+            </Tr>
+          </Tbody>
+        </Table>
+      </Box>
+      <Tip>
+        <Typography><strong>Good practice:</strong> Click "Save" first to keep your work safe. Then when everything looks good, click "Publish"!</Typography>
+      </Tip>
+    </Box>
+
+    <Typography variant="delta" as="h3">Making Text Bold, Italic, or Adding Bullet Points</Typography>
+    <Box paddingTop={3}>
+      <Typography paddingBottom={2}>Some text boxes have formatting buttons at the top (they look like a mini toolbar):</Typography>
+      <ContentCard>
+        <Typography variant="epsilon">Common formatting buttons:</Typography>
+        <ul style={{ paddingLeft: '20px', marginTop: '8px' }}>
+          <li><Typography><strong>B</strong> - Makes text bold (select text first, then click)</Typography></li>
+          <li><Typography><em>I</em> - Makes text italic (select text first, then click)</Typography></li>
+          <li><Typography>• - Creates bullet point lists</Typography></li>
+          <li><Typography>1. 2. 3. - Creates numbered lists</Typography></li>
+        </ul>
+        <Box paddingTop={3}>
+          <Typography><strong>How to use them:</strong></Typography>
+          <StepItem style={{ paddingTop: '12px' }}>
+            <StepNumber>1</StepNumber>
+            <Typography>Highlight the text you want to change (like selecting text in Word or Email)</Typography>
+          </StepItem>
+          <StepItem>
+            <StepNumber>2</StepNumber>
+            <Typography>Click the button you want (B for bold, I for italic, etc.)</Typography>
+          </StepItem>
+          <StepItem>
+            <StepNumber>3</StepNumber>
+            <Typography>The text will change! If you don't like it, click the button again to undo</Typography>
+          </StepItem>
+        </Box>
+      </ContentCard>
+    </Box>
+  </Box>
+);
+
+// Image Guidelines Section
+const ImageGuidelinesSection = () => (
+  <Box>
+    <Typography paddingBottom={3}>Photos make your website look professional! Here's what you need to know about uploading images.</Typography>
+
+    <Typography variant="delta" as="h3">Photo Size Guide (Simple)</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <Typography paddingBottom={2}>Different parts of the website need different sized photos. Here's a cheat sheet:</Typography>
+      <Box paddingTop={3}>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th><Typography variant="sigma">What It's For</Typography></Th>
+              <Th><Typography variant="sigma">How Big</Typography></Th>
+              <Th><Typography variant="sigma">Shape</Typography></Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <Td><Typography fontWeight="bold">Homepage Banner (Hero)</Typography></Td>
+              <Td><Typography>1920 x 600 pixels</Typography></Td>
+              <Td><Badge>Wide rectangle</Badge></Td>
+            </Tr>
+            <Tr>
+              <Td><Typography fontWeight="bold">Team Member Photos</Typography></Td>
+              <Td><Typography>400 x 400 pixels</Typography></Td>
+              <Td><Badge>Square</Badge></Td>
+            </Tr>
+            <Tr>
+              <Td><Typography fontWeight="bold">Project Photos</Typography></Td>
+              <Td><Typography>800 x 600 pixels</Typography></Td>
+              <Td><Badge>Regular rectangle</Badge></Td>
+            </Tr>
+            <Tr>
+              <Td><Typography fontWeight="bold">Testimonial Avatars</Typography></Td>
+              <Td><Typography>200 x 200 pixels</Typography></Td>
+              <Td><Badge>Small square</Badge></Td>
+            </Tr>
+          </Tbody>
+        </Table>
+      </Box>
+      <Tip>
+        <Typography><strong>Don't worry too much!</strong> The website will automatically resize photos if they're not perfect. These are just ideal sizes.</Typography>
+      </Tip>
+    </Box>
+
+    <Typography variant="delta" as="h3">What Type of Photo File to Use</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <Typography paddingBottom={2}>You'll mostly use these two types:</Typography>
+      <ContentCard>
+        <ul style={{ paddingLeft: '20px' }}>
+          <li><Typography><strong>JPG files</strong> - Best for photos (like landscapes, team photos, project pictures). Most phone cameras save as JPG.</Typography></li>
+          <li><Typography><strong>PNG files</strong> - Best for logos or graphics with transparent backgrounds.</Typography></li>
+        </ul>
+      </ContentCard>
+      <Warning>
+        <Typography><strong>Don't use:</strong> HEIC files (iPhone default). Convert them to JPG first or change your iPhone camera settings.</Typography>
+      </Warning>
+    </Box>
+
+    <Typography variant="delta" as="h3">Photo File Size (Important!)</Typography>
+    <Box paddingTop={3}>
+      <Typography paddingBottom={2}>Big photo files slow down your website. Here's what's okay and what's too big:</Typography>
+      <Box paddingTop={3}>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th><Typography variant="sigma">File Size</Typography></Th>
+              <Th><Typography variant="sigma">Is It Okay?</Typography></Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <Td><Typography>Under 200 KB</Typography></Td>
+              <Td><Badge active>✓ Perfect!</Badge></Td>
+            </Tr>
+            <Tr>
+              <Td><Typography>200 KB - 500 KB</Typography></Td>
+              <Td><Badge>✓ Good</Badge></Td>
+            </Tr>
+            <Tr>
+              <Td><Typography>500 KB - 1 MB</Typography></Td>
+              <Td><Badge textColor="warning600" backgroundColor="warning100">⚠ Too big - compress it</Badge></Td>
+            </Tr>
+            <Tr>
+              <Td><Typography>Over 1 MB</Typography></Td>
+              <Td><Badge textColor="danger600" backgroundColor="danger100">✗ Way too big!</Badge></Td>
+            </Tr>
+          </Tbody>
+        </Table>
+      </Box>
+      <Box paddingTop={4}>
+        <Typography variant="epsilon">How to make photos smaller:</Typography>
+        <StepItem style={{ paddingTop: '12px' }}>
+          <StepNumber>1</StepNumber>
+          <Typography>Go to <strong>tinypng.com</strong> in your web browser</Typography>
+        </StepItem>
+        <StepItem>
+          <StepNumber>2</StepNumber>
+          <Typography>Drag your photo onto the website</Typography>
+        </StepItem>
+        <StepItem>
+          <StepNumber>3</StepNumber>
+          <Typography>Wait a few seconds for it to compress</Typography>
+        </StepItem>
+        <StepItem>
+          <StepNumber>4</StepNumber>
+          <Typography>Download the smaller version and use that one!</Typography>
+        </StepItem>
+      </Box>
+      <Tip>
+        <Typography><strong>Pro tip:</strong> Always compress photos BEFORE uploading them to the website. It makes the website load faster for visitors!</Typography>
+      </Tip>
+    </Box>
+  </Box>
+);
+
+// SEO Best Practices Section
+const SEOSection = () => (
+  <Box>
+    <Typography paddingBottom={4}>Search Engine Optimization (SEO) helps people find your website on Google and other search engines.</Typography>
+
+    <Typography variant="delta" as="h3">Meta Titles</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <Typography>The meta title appears in search results and browser tabs.</Typography>
+      <ContentCard>
+        <Typography variant="epsilon">Best practices:</Typography>
+        <ul style={{ paddingLeft: '20px', marginTop: '8px' }}>
+          <li><Typography>Keep under <strong>60 characters</strong> (or it gets cut off)</Typography></li>
+          <li><Typography>Include your main keyword</Typography></li>
+          <li><Typography>Make it descriptive and compelling</Typography></li>
+          <li><Typography>Include your company name at the end</Typography></li>
+        </ul>
+      </ContentCard>
+      <Box paddingTop={3}>
+        <Flex gap={2} alignItems="center">
+          <Badge active>✓ Good</Badge>
+          <Typography>"Landscape Services in Phoenix | GeoSolutions"</Typography>
+        </Flex>
+        <Flex gap={2} alignItems="center" paddingTop={2}>
+          <Badge textColor="danger600" backgroundColor="danger100">✗ Too long</Badge>
+          <Typography>"Professional Landscape Design, Installation, and Maintenance Services..."</Typography>
+        </Flex>
+      </Box>
+    </Box>
+
+    <Typography variant="delta" as="h3">Meta Descriptions</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <Typography>The meta description appears below the title in search results.</Typography>
+      <ContentCard>
+        <Typography variant="epsilon">Best practices:</Typography>
+        <ul style={{ paddingLeft: '20px', marginTop: '8px' }}>
+          <li><Typography>Keep under <strong>160 characters</strong></Typography></li>
+          <li><Typography>Summarize the page content</Typography></li>
+          <li><Typography>Include a call-to-action</Typography></li>
+          <li><Typography>Use natural, conversational language</Typography></li>
+        </ul>
+      </ContentCard>
+    </Box>
+
+    <Typography variant="delta" as="h3">Image Alt Text</Typography>
+    <Box paddingTop={3}>
+      <Typography>Alt text describes images for screen readers (accessibility) and search engines.</Typography>
+      <ContentCard>
+        <Typography variant="epsilon">Best practices:</Typography>
+        <ul style={{ paddingLeft: '20px', marginTop: '8px' }}>
+          <li><Typography>Describe what's in the image</Typography></li>
+          <li><Typography>Keep it concise (under 125 characters)</Typography></li>
+          <li><Typography>Include keywords naturally</Typography></li>
+          <li><Typography>Don't start with "Image of..." (it's implied)</Typography></li>
+        </ul>
+      </ContentCard>
+      <Box paddingTop={3}>
+        <Flex gap={2} alignItems="center">
+          <Badge active>✓ Good</Badge>
+          <Typography>"Modern desert garden with native plants and stone pathway"</Typography>
+        </Flex>
+        <Flex gap={2} alignItems="center" paddingTop={2}>
+          <Badge textColor="danger600" backgroundColor="danger100">✗ Too generic</Badge>
+          <Typography>"Image1" or "Photo"</Typography>
+        </Flex>
+      </Box>
+    </Box>
+  </Box>
+);
+
+// Common Tasks Section
+const CommonTasksSection = ({ toggleAccordion, expandedSections }) => {
+  const tasks = [
+    {
+      id: 'add-team',
+      title: 'Adding a New Team Member',
+      steps: [
+        'Click "Content Manager" → "Team"',
+        'Click "Create new entry" button (top right)',
+        'Fill in: Name, Role, Photo (400x400px), Bio (optional), Order number',
+        'Click "Save" to review, or "Publish" to make live',
+        'Check the website to see the new team member',
+      ],
+    },
+    {
+      id: 'add-project',
+      title: 'Adding a New Project',
+      steps: [
+        'Click "Content Manager" → "Projects"',
+        'Click "Create new entry" button',
+        'Fill in: Title, Description, Category, Location, Date',
+        'Upload Before Photos (1-3 images, 800x600px or larger)',
+        'Upload After Photos (1-3 images, 800x600px or larger)',
+        'Set Order number and click "Publish"',
+      ],
+    },
+    {
+      id: 'change-contact',
+      title: 'Changing Contact Information',
+      steps: [
+        'Click "Content Manager" → "Site Setting"',
+        'Click on the single entry',
+        'Update: Email, Phone, Address, Footer Tagline, Social Media Links',
+        'Click "Publish" to update',
+        'Check the footer on any page to confirm changes',
+      ],
+    },
+    {
+      id: 'add-testimonial',
+      title: 'Adding a Testimonial',
+      steps: [
+        'Click "Content Manager" → "Testimonials"',
+        'Click "Create new entry" button',
+        'Fill in: Client Name, Company (optional), Quote, Photo (200x200px, optional)',
+        'Set Order number',
+        'Click "Publish" to add to homepage',
+      ],
+    },
+    {
+      id: 'update-hero',
+      title: 'Updating the Hero Image',
+      steps: [
+        'Click "Content Manager" → "Hero"',
+        'Click on the entry to open it',
+        'Find the "Banner Image" field',
+        'Upload a new image (1920 x 600px, wide landscape)',
+        'Optional: Update heading or subheading text',
+        'Click "Publish" to update',
+      ],
+    },
+  ];
+
+  return (
+    <Box>
+      <Typography paddingBottom={4}>Quick reference guide for frequently performed actions:</Typography>
+      <AccordionGroup>
+        {tasks.map((task) => (
+          <Accordion
+            key={task.id}
+            expanded={expandedSections[task.id]}
+            onToggle={() => toggleAccordion(task.id)}
+            id={`accordion-${task.id}`}
+            size="S"
+          >
+            <AccordionToggle title={task.title} />
+            <AccordionContent>
+              <Box padding={4}>
+                {task.steps.map((step, idx) => (
+                  <StepItem key={idx}>
+                    <StepNumber>{idx + 1}</StepNumber>
+                    <Typography>{step}</Typography>
+                  </StepItem>
+                ))}
+              </Box>
+            </AccordionContent>
+          </Accordion>
+        ))}
+      </AccordionGroup>
+    </Box>
+  );
+};
+
+// Troubleshooting Section
+const TroubleshootingSection = ({ toggleAccordion, expandedSections }) => {
+  const issues = [
+    {
+      id: 'not-appearing',
+      title: 'Content Not Appearing on Website',
+      solutions: [
+        { label: 'Check publication status', detail: 'Open the entry and look for "Published" status. If it says "Draft", click "Publish".' },
+        { label: 'Clear browser cache', detail: 'Press Ctrl+Shift+R (PC) or Cmd+Shift+R (Mac), or try incognito mode.' },
+        { label: 'Check the correct page', detail: 'Verify you\'re looking at the right page where content should appear.' },
+        { label: 'Wait a moment', detail: 'Some changes take 30-60 seconds to propagate.' },
+      ],
+    },
+    {
+      id: 'images-not-loading',
+      title: 'Images Not Loading',
+      solutions: [
+        { label: 'Check file size', detail: 'Large files (over 5MB) may fail. Use TinyPNG.com to compress.' },
+        { label: 'Check file format', detail: 'Use JPG, PNG, or WebP only. Avoid TIFF, BMP, or PSD files.' },
+        { label: 'Check upload completion', detail: 'Wait for thumbnail to appear. Don\'t click away while uploading.' },
+        { label: 'Re-upload', detail: 'Remove the image, save, then re-open and upload again.' },
+      ],
+    },
+    {
+      id: 'changes-not-showing',
+      title: 'Changes Not Showing After Publishing',
+      solutions: [
+        { label: 'Hard refresh', detail: 'Windows/Linux: Ctrl+Shift+R | Mac: Cmd+Shift+R' },
+        { label: 'Try incognito/private browsing', detail: 'Opens a fresh browser session without cache.' },
+        { label: 'Verify published status', detail: 'Open the entry and confirm status shows "Published".' },
+        { label: 'Check environment', detail: 'Make sure you\'re editing the production CMS, not staging.' },
+      ],
+    },
+    {
+      id: 'cant-upload',
+      title: 'Can\'t Upload Files',
+      solutions: [
+        { label: 'Check file size', detail: 'Maximum recommended: 5 MB. Compress before uploading.' },
+        { label: 'Check permissions', detail: 'Your account may not have upload rights. Contact admin.' },
+        { label: 'Try different browser', detail: 'Use Chrome, Firefox, Safari, or Edge (latest version).' },
+        { label: 'Check file type', detail: 'Images: JPG, PNG, WebP, GIF. Documents: PDF, DOC, DOCX.' },
+      ],
+    },
+  ];
+
+  return (
+    <Box>
+      <AccordionGroup>
+        {issues.map((issue) => (
+          <Accordion
+            key={issue.id}
+            expanded={expandedSections[issue.id]}
+            onToggle={() => toggleAccordion(issue.id)}
+            id={`accordion-${issue.id}`}
+            size="S"
+          >
+            <AccordionToggle title={issue.title} />
+            <AccordionContent>
+              <Box padding={4}>
+                {issue.solutions.map((solution, idx) => (
+                  <Box key={idx} paddingBottom={3}>
+                    <Typography fontWeight="bold">{idx + 1}. {solution.label}</Typography>
+                    <Typography textColor="neutral600" paddingTop={1}>{solution.detail}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </AccordionContent>
+          </Accordion>
+        ))}
+      </AccordionGroup>
+
+      <Warning>
+        <Typography><strong>Need Additional Help?</strong> Document the problem with screenshots and contact your website administrator.</Typography>
+      </Warning>
+    </Box>
+  );
+};
+
+// Quick Reference Section
+const QuickReferenceSection = () => (
+  <Box>
+    <Typography variant="delta" as="h3">Image Size Quick Reference</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <ContentCard>
+        <ul style={{ paddingLeft: '20px', margin: 0 }}>
+          <li><Typography><strong>Hero:</strong> 1920 x 600px</Typography></li>
+          <li><Typography><strong>Team:</strong> 400 x 400px</Typography></li>
+          <li><Typography><strong>Projects:</strong> 800 x 600px</Typography></li>
+          <li><Typography><strong>Testimonials:</strong> 200 x 200px</Typography></li>
+          <li><Typography><strong>Max file size:</strong> 5MB</Typography></li>
+        </ul>
+      </ContentCard>
+    </Box>
+
+    <Typography variant="delta" as="h3">Keyboard Shortcuts</Typography>
+    <Box paddingTop={3} paddingBottom={4}>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th><Typography variant="sigma">Action</Typography></Th>
+            <Th><Typography variant="sigma">Windows/Linux</Typography></Th>
+            <Th><Typography variant="sigma">Mac</Typography></Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td><Typography>Save</Typography></Td>
+            <Td><CodeBlock style={{ display: 'inline', padding: '2px 6px' }}>Ctrl+S</CodeBlock></Td>
+            <Td><CodeBlock style={{ display: 'inline', padding: '2px 6px' }}>Cmd+S</CodeBlock></Td>
+          </Tr>
+          <Tr>
+            <Td><Typography>Bold text</Typography></Td>
+            <Td><CodeBlock style={{ display: 'inline', padding: '2px 6px' }}>Ctrl+B</CodeBlock></Td>
+            <Td><CodeBlock style={{ display: 'inline', padding: '2px 6px' }}>Cmd+B</CodeBlock></Td>
+          </Tr>
+          <Tr>
+            <Td><Typography>Italic text</Typography></Td>
+            <Td><CodeBlock style={{ display: 'inline', padding: '2px 6px' }}>Ctrl+I</CodeBlock></Td>
+            <Td><CodeBlock style={{ display: 'inline', padding: '2px 6px' }}>Cmd+I</CodeBlock></Td>
+          </Tr>
+          <Tr>
+            <Td><Typography>Hard refresh</Typography></Td>
+            <Td><CodeBlock style={{ display: 'inline', padding: '2px 6px' }}>Ctrl+Shift+R</CodeBlock></Td>
+            <Td><CodeBlock style={{ display: 'inline', padding: '2px 6px' }}>Cmd+Shift+R</CodeBlock></Td>
+          </Tr>
+        </Tbody>
+      </Table>
+    </Box>
+
+    <Typography variant="delta" as="h3">Publishing Checklist</Typography>
+    <Box paddingTop={3}>
+      <ChecklistBox>
+        <ChecklistItem gap={2}>
+          <Typography>☐</Typography>
+          <Typography>Content is accurate and complete</Typography>
+        </ChecklistItem>
+        <ChecklistItem gap={2}>
+          <Typography>☐</Typography>
+          <Typography>Images are uploaded and display correctly</Typography>
+        </ChecklistItem>
+        <ChecklistItem gap={2}>
+          <Typography>☐</Typography>
+          <Typography>Alt text is added to all images</Typography>
+        </ChecklistItem>
+        <ChecklistItem gap={2}>
+          <Typography>☐</Typography>
+          <Typography>Meta title is under 60 characters</Typography>
+        </ChecklistItem>
+        <ChecklistItem gap={2}>
+          <Typography>☐</Typography>
+          <Typography>Meta description is under 160 characters</Typography>
+        </ChecklistItem>
+        <ChecklistItem gap={2}>
+          <Typography>☐</Typography>
+          <Typography>Preview looks good</Typography>
+        </ChecklistItem>
+        <ChecklistItem gap={2}>
+          <Typography>☐</Typography>
+          <Typography>Ready to publish! ✓</Typography>
+        </ChecklistItem>
+      </ChecklistBox>
+    </Box>
+
+    <Typography variant="delta" as="h3" paddingTop={4}>Best Practices Summary</Typography>
+    <Box paddingTop={3}>
+      <Flex gap={4}>
+        <Box style={{ flex: 1 }}>
+          <Typography fontWeight="bold" textColor="success600">✅ DO:</Typography>
+          <ul style={{ paddingLeft: '20px', marginTop: '8px' }}>
+            <li><Typography>Save your work frequently</Typography></li>
+            <li><Typography>Use draft mode to preview</Typography></li>
+            <li><Typography>Optimize images before uploading</Typography></li>
+            <li><Typography>Fill in alt text for accessibility</Typography></li>
+            <li><Typography>Test changes on mobile devices</Typography></li>
+          </ul>
+        </Box>
+        <Box style={{ flex: 1 }}>
+          <Typography fontWeight="bold" textColor="danger600">❌ DON'T:</Typography>
+          <ul style={{ paddingLeft: '20px', marginTop: '8px' }}>
+            <li><Typography>Upload images over 1MB</Typography></li>
+            <li><Typography>Use special characters in filenames</Typography></li>
+            <li><Typography>Publish without reviewing</Typography></li>
+            <li><Typography>Copy/paste from Word directly</Typography></li>
+            <li><Typography>Share your login credentials</Typography></li>
+          </ul>
+        </Box>
+      </Flex>
+    </Box>
+  </Box>
+);
+
+// ============ EXPORT DOCUMENTATION CONTENT ============
+
+export const documentationContent = [
+  {
+    id: 'getting-started',
+    title: '🚀 Getting Started',
+    content: 'Learn how to log in and find your way around.',
+    component: GettingStartedSection,
+  },
+  {
+    id: 'content-types',
+    title: '📁 What Can You Edit?',
+    content: 'All the different parts of the website you can change.',
+    component: ContentTypesSection,
+  },
+  {
+    id: 'editing-content',
+    title: '✏️ How to Make Changes',
+    content: 'Easy steps for editing text, adding photos, and publishing.',
+    component: EditingContentSection,
+  },
+  {
+    id: 'image-guidelines',
+    title: '🖼️ Photo Guide',
+    content: 'Simple tips for uploading photos that look great.',
+    component: ImageGuidelinesSection,
+  },
+  {
+    id: 'seo-best-practices',
+    title: '🔍 SEO Tips (Optional)',
+    content: 'Help people find your website on Google.',
+    component: SEOSection,
+  },
+  {
+    id: 'common-tasks',
+    title: '📋 Quick How-Tos',
+    content: 'Step-by-step guides for common jobs.',
+    component: CommonTasksSection,
+  },
+  {
+    id: 'troubleshooting',
+    title: '🔧 Something Not Working?',
+    content: 'Fixes for common problems.',
+    component: TroubleshootingSection,
+  },
+  {
+    id: 'quick-reference',
+    title: '⚡ Cheat Sheet',
+    content: 'Quick reference for sizes, shortcuts, and tips.',
+    component: QuickReferenceSection,
+  },
+];

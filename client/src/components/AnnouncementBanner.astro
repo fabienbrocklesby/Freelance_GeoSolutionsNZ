@@ -1,0 +1,148 @@
+---
+import { fetchAPI } from "../lib/api.js";
+import { marked } from "marked";
+
+const data = await fetchAPI("announcement");
+const announcement = data?.data?.attributes;
+
+const shouldShow = announcement?.enabled;
+const announcementId = data?.data?.id;
+
+// Map DaisyUI color names to actual hex values for inline styles
+const colorMap = {
+  'primary': '#2db875',
+  'secondary': '#f3a1a0',
+  'accent': '#3a4a6a',
+  'neutral': '#f0f4f8',
+  'success': '#36d399',
+  'warning': '#fbbd23',
+  'error': '#f87272',
+  'info': '#3abff8',
+};
+
+// Corresponding text colors for semantic colors (for good contrast)
+const textColorMap = {
+  'primary': '#ffffff',
+  'secondary': '#1f2937',
+  'accent': '#ffffff',
+  'neutral': '#1f2937',
+  'success': '#1f2937',
+  'warning': '#1f2937',
+  'error': '#ffffff',
+  'info': '#1f2937',
+};
+
+// Get background color - check if it's a named color or a hex/rgb value
+const getBgColor = (color) => {
+  if (!color) return '#2563eb'; // Default blue
+  if (color.startsWith('#') || color.startsWith('rgb') || color.startsWith('hsl')) {
+    return color;
+  }
+  return colorMap[color] || '#2563eb';
+};
+
+// For text color, use contrast colors for DaisyUI semantic colors
+const getTextColor = (bgColor, textColor) => {
+  if (textColor) {
+    if (textColor.startsWith('#') || textColor.startsWith('rgb') || textColor.startsWith('hsl')) {
+      return textColor;
+    }
+    return colorMap[textColor] || textColor;
+  }
+  
+  // If background is a named semantic color, use the corresponding contrast color
+  return textColorMap[bgColor] || '#ffffff';
+};
+
+const backgroundColor = getBgColor(announcement?.backgroundColor);
+const textColor = getTextColor(announcement?.backgroundColor, announcement?.textColor);
+---
+
+{shouldShow && (
+  <div 
+    id="announcement-banner" 
+    class="fixed top-0 left-0 right-0 z-[60] transition-all duration-300 shadow-sm"
+    style={`background-color: ${backgroundColor}; color: ${textColor};`}
+    data-dismissible={announcement.dismissible}
+    data-announcement-id={announcementId}
+  >
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between py-3 gap-4">
+        <div class="flex-1 flex items-center gap-3 text-sm sm:text-base">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+            <span class="font-medium" set:html={marked.parseInline(announcement.message)} />
+            {announcement.linkText && announcement.linkUrl && (
+              <a 
+                href={announcement.linkUrl} 
+                class="underline hover:no-underline font-semibold inline-flex items-center gap-1 transition-opacity hover:opacity-80"
+              >
+                {announcement.linkText}
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            )}
+          </div>
+        </div>
+        {announcement.dismissible && (
+          <button 
+            type="button" 
+            id="dismiss-announcement"
+            class="flex-shrink-0 p-1.5 rounded hover:bg-white/20 transition-colors cursor-pointer"
+            aria-label="Dismiss announcement"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function() {
+      const banner = document.getElementById('announcement-banner');
+      if (!banner) return;
+
+      const isDismissible = banner.dataset.dismissible === 'true';
+      const announcementId = banner.dataset.announcementId;
+      const storageKey = `announcement-dismissed-${announcementId}`;
+      const isDismissed = localStorage.getItem(storageKey) === 'true';
+      
+      function updateNavbarPosition() {
+        const navbar = document.querySelector('header');
+        const banner = document.getElementById('announcement-banner');
+        
+        if (navbar && banner && getComputedStyle(banner).display !== 'none') {
+          const bannerHeight = banner.offsetHeight;
+          navbar.style.top = bannerHeight + 'px';
+          navbar.style.transition = 'top 0.3s ease';
+        } else if (navbar) {
+          navbar.style.top = '0';
+        }
+      }
+      
+      if (isDismissed && isDismissible) {
+        banner.style.display = 'none';
+        updateNavbarPosition();
+        return;
+      }
+
+      const dismissBtn = document.getElementById('dismiss-announcement');
+      if (dismissBtn) {
+        dismissBtn.addEventListener('click', () => {
+          banner.style.display = 'none';
+          localStorage.setItem(storageKey, 'true');
+          updateNavbarPosition();
+        });
+      }
+
+      setTimeout(updateNavbarPosition, 100);
+      window.addEventListener('resize', updateNavbarPosition);
+    })();
+  </script>
+)}

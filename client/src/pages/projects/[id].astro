@@ -1,76 +1,95 @@
 ---
 import Layout from "../../layouts/DefaultLayout.astro";
+import { marked } from "marked";
+import { fetchAPI, getImageUrl } from "../../lib/api.js";
 
 const { id } = Astro.params;
-const apiUrl = process.env.PUBLIC_API_URL;
-const imageUrl = process.env.PUBLIC_IMAGE_URL;
-const response = await fetch(
-	`${apiUrl}/api/projects/${id}?populate=thumbnail,beforePhoto,afterPhoto`
+const result = await fetchAPI(
+  `projects/${id}?populate=thumbnail,beforePhoto,afterPhoto,seo,seo.ogImage`
 );
-const { data } = await response.json();
-const { attributes: project } = data;
+const project = result?.data?.attributes;
+
+if (!project) {
+  return Astro.redirect("/projects");
+}
+
+const seo = project.seo || {};
+const ogImage = seo.ogImage?.data?.attributes?.url
+  ? getImageUrl(seo.ogImage.data.attributes.url)
+  : null;
+
+const description = project.description
+  ? marked.parse(project.description)
+  : "";
 ---
 
-<Layout title={project.title}>
-	<div
-		class="bg-gray-50"
-		data-aos="fade-in"
-		data-aos-duration="1000"
-		data-aos-once="true"
-	>
-		<div class="container mx-auto px-4 pt-40 pb-16">
-			<div class="max-w-4xl mx-auto">
-				<h1 class="text-4xl font-bold text-primary mb-4">{project.title}</h1>
+<Layout
+  title={seo.metaTitle || project.title}
+  description={seo.metaDescription}
+  ogImage={ogImage}
+>
+  <div
+    class="bg-gray-50"
+    data-aos="fade-in"
+    data-aos-duration="1000"
+    data-aos-once="true"
+  >
+    <div class="container mx-auto px-4 pt-40 pb-16">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-primary mb-4">{project.title}</h1>
 
-				<div class="bg-base-100 shadow-xl rounded-lg overflow-hidden mb-8">
-					<img
-						src={imageUrl + project.thumbnail.data.attributes.url}
-						alt={project.title}
-						class="w-full h-auto object-cover"
-					/>
-				</div>
+        <div class="bg-base-100 shadow-xl rounded-lg overflow-hidden mb-8">
+          <img
+            src={getImageUrl(project.thumbnail?.data?.attributes?.url)}
+            alt={project.title}
+            class="w-full h-auto object-cover"
+          />
+        </div>
 
-				<div class="mt-4 bg-gray-200 p-8 rounded-lg shadow-lg">
-					<h2 class="text-2xl font-semibold mb-2">Project Details</h2>
-					<p class="text-gray-600 mb-4">{project.description}</p>
-					<p class="text-sm text-gray-500">
-						<span class="font-bold">Duration:</span>
-						{project.startDate} - {project.endDate}
-					</p>
-				</div>
+        <div class="mt-4 bg-gray-200 p-8 rounded-lg shadow-lg">
+          <h2 class="text-2xl font-semibold mb-2">Project Details</h2>
+          <div
+            class="text-gray-600 mb-4 prose prose-lg max-w-none"
+            set:html={description}
+          />
+          <p class="text-sm text-gray-500">
+            <span class="font-bold">Duration:</span>
+            {project.startDate} - {project.endDate}
+          </p>
+        </div>
 
-				<div class="mt-16 mb-8 bg-gray-200 p-8 rounded-lg shadow-lg">
-					<h2 class="text-2xl font-semibold mb-4">Before and After</h2>
-					<div class="flex flex-col sm:flex-row gap-8">
-						<div class="flex-1">
-							<div class="rounded-lg overflow-hidden mb-2">
-								<img
-									src={imageUrl + project.beforePhoto.data.attributes.url}
-									alt="Before"
-									class="w-full h-64 object-cover"
-								/>
-							</div>
-							<p class="text-center text-gray-600 font-semibold">Before</p>
-						</div>
-						<div class="flex-1">
-							<div class="rounded-lg overflow-hidden mb-2">
-								<img
-									src={imageUrl + project.afterPhoto.data.attributes.url}
-									alt="After"
-									class="w-full h-64 object-cover"
-								/>
-							</div>
-							<p class="text-center text-gray-600 font-semibold">After</p>
-						</div>
-					</div>
-				</div>
+        <div class="mt-16 mb-8 bg-gray-200 p-8 rounded-lg shadow-lg">
+          <h2 class="text-2xl font-semibold mb-4">Before and After</h2>
+          <div class="flex flex-col sm:flex-row gap-8">
+            <div class="flex-1">
+              <div class="rounded-lg overflow-hidden mb-2">
+                <img
+                  src={getImageUrl(project.beforePhoto?.data?.attributes?.url)}
+                  alt="Before"
+                  class="w-full h-64 object-cover"
+                />
+              </div>
+              <p class="text-center text-gray-600 font-semibold">Before</p>
+            </div>
+            <div class="flex-1">
+              <div class="rounded-lg overflow-hidden mb-2">
+                <img
+                  src={getImageUrl(project.afterPhoto?.data?.attributes?.url)}
+                  alt="After"
+                  class="w-full h-64 object-cover"
+                />
+              </div>
+              <p class="text-center text-gray-600 font-semibold">After</p>
+            </div>
+          </div>
+        </div>
 
-				<div class="text-center mt-16">
-					<a href="/projects" class="btn btn-primary text-white">
-						Back to All Projects
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="text-center mt-16">
+          <a href="/projects" class="btn btn-primary text-white">
+            Back to All Projects
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </Layout>

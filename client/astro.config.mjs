@@ -1,14 +1,16 @@
 import { defineConfig } from "astro/config";
-import node from "@astrojs/node";
+import cloudflare from "@astrojs/cloudflare";
+import tailwind from "@astrojs/tailwind";
 import "dotenv/config";
 
-import tailwind from "@astrojs/tailwind";
-
-// https://astro.build/config
 export default defineConfig({
+	site: process.env.PUBLIC_SITE_URL || "https://geosolutions.nz",
 	output: "server",
-	adapter: node({
-		mode: "standalone",
-	}),
-	integrations: [tailwind()],
+	adapter: cloudflare(),
+	image: {
+		service: {
+			entrypoint: "astro/assets/services/noop",
+		},
+	},
+	integrations: [tailwind({ applyBaseStyles: false })],
 });

@@ -1,17 +1,23 @@
+---
+import { marked } from "marked";
+import { fetchAPI } from "../lib/api.js";
+import { aboutDefaults } from "../lib/constants.js";
+
+let content = aboutDefaults.content;
+
+const data = await fetchAPI("about?populate=*");
+if (data?.data?.attributes?.content) {
+  content = await marked.parse(data.data.attributes.content);
+}
+---
+
 <section
-	id="about"
-	class="py-16 text-gray-600"
-	data-aos="slide-right"
-	data-aos-duration="750"
-	data-aos-once="true"
+  id="about"
+  class="py-16 text-gray-600"
+  data-aos="slide-right"
+  data-aos-duration="750"
+  data-aos-once="true"
 >
-	<h2 class="text-3xl text-center mb-8">About Us</h2>
-	<p class="text-center max-w-2xl mx-auto">
-		We are a specialised geotechnical consultancy, covering projects and sites
-		all around the Top of the South Island and look after both the residential
-		and commercial building sectors. We’re a local business and aim to look
-		after our clients so that they tell all their friends. Word-of-mouth
-		referrals are our favourite jobs! Talk to us now and find out how we can
-		help.
-	</p>
+  <h2 class="text-3xl text-center mb-8">About Us</h2>
+  <div class="text-center max-w-2xl mx-auto" set:html={content} />
 </section>
