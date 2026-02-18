@@ -1,13 +1,13 @@
 module.exports = ({ env }) => ({
   email: {
     config: {
-      provider: "sendgrid",
+      provider: "strapi-provider-email-resend",
       providerOptions: {
-        apiKey: env("SENDGRID_API_KEY"),
+        apiKey: env("RESEND_API_KEY"),
       },
       settings: {
-        defaultFrom: "sendgrid@fabienbrocklesby.com",
-        defaultReplyTo: "sendgrid@fabienbrocklesby.com",
+        defaultFrom: env("EMAIL_FROM", "noreply@geosolutions.nz"),
+        defaultReplyTo: env("EMAIL_REPLY_TO", "info@geosolutions.nz"),
       },
     },
   },

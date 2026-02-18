@@ -42,7 +42,10 @@ services:
       API_TOKEN_SALT: ${API_TOKEN_SALT}
       TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
       APP_KEYS: ${APP_KEYS}
-      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      EMAIL_FROM: ${EMAIL_FROM:-noreply@geosolutions.nz}
+      EMAIL_REPLY_TO: ${EMAIL_REPLY_TO:-info@geosolutions.nz}
+      EMAIL_NOTIFICATIONS_TO: ${EMAIL_NOTIFICATIONS_TO:-fabienbrocklesby@icloud.com}
     volumes:
       - strapi-uploads:/opt/app/public/uploads
     expose:
