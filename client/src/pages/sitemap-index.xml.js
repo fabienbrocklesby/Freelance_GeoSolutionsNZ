@@ -1,4 +1,7 @@
-const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:1337";
+const API_URL = (import.meta.env.PUBLIC_API_URL || "http://localhost:1337").replace(
+	/\/$/,
+	""
+);
 
 export async function GET({ site }) {
 	const siteUrl = site || "https://geosolutions.nz";
@@ -8,8 +11,7 @@ export async function GET({ site }) {
 		{ loc: `${siteUrl}/about`, priority: "0.8" },
 		{ loc: `${siteUrl}/services`, priority: "0.8" },
 		{ loc: `${siteUrl}/projects`, priority: "0.8" },
-		{ loc: `${siteUrl}/documents`, priority: "0.7" },
-		{ loc: `${siteUrl}/contact`, priority: "0.6" },
+		{ loc: `${siteUrl}/publications`, priority: "0.7" },
 	];
 
 	let dynamicUrls = [];

@@ -32,12 +32,7 @@ RUN addgroup -g 1001 -S nodejs && adduser -S strapi -u 1001
 WORKDIR /opt/app
 
 COPY --from=builder --chown=strapi:nodejs /opt/node_modules ./node_modules
-COPY --from=builder --chown=strapi:nodejs /opt/app/dist ./dist
-COPY --from=builder --chown=strapi:nodejs /opt/app/public ./public
-COPY --from=builder --chown=strapi:nodejs /opt/app/config ./config
-COPY --from=builder --chown=strapi:nodejs /opt/app/src ./src
-COPY --from=builder --chown=strapi:nodejs /opt/app/package.json ./
-COPY --from=builder --chown=strapi:nodejs /opt/app/favicon.png ./
+COPY --from=builder --chown=strapi:nodejs /opt/app ./
 
 RUN mkdir -p /opt/app/public/uploads && chown -R strapi:nodejs /opt/app/public/uploads
 

@@ -7,7 +7,7 @@ let content = aboutDefaults.content;
 
 const data = await fetchAPI("about?populate=*");
 if (data?.data?.attributes?.content) {
-  content = marked.parse(data.data.attributes.content);
+  content = await marked.parse(data.data.attributes.content);
 }
 ---
 

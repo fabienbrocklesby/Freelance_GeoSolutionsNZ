@@ -1,10 +1,9 @@
 ---
-import { getImage } from "astro:assets";
 import { marked } from "marked";
 import { fetchAPI, getImageUrl } from "../lib/api.js";
 import { heroDefaults } from "../lib/constants.js";
 
-let optimizedImage = null;
+let bannerImageUrl = "";
 let heading = heroDefaults.heading;
 let subheading = heroDefaults.subheading;
 let buttonText = heroDefaults.buttonText;
@@ -30,24 +29,18 @@ if (data?.attributes) {
   if (typeof attrs.buttonEnabled2 === "boolean") buttonEnabled2 = attrs.buttonEnabled2;
 
   if (attrs.Banner?.data?.attributes?.url) {
-    const imageUrl = getImageUrl(attrs.Banner.data.attributes.url);
-    optimizedImage = await getImage({
-      src: imageUrl,
-      width: 1600,
-      height: 900,
-      format: "webp",
-    });
+    bannerImageUrl = getImageUrl(attrs.Banner.data.attributes.url);
   }
 }
 ---
 
 {
-  optimizedImage && (
+  bannerImageUrl && (
     <head>
       <link
         rel="preload"
         as="image"
-        href={optimizedImage.src}
+        href={bannerImageUrl}
       />
     </head>
   )
@@ -56,8 +49,8 @@ if (data?.attributes) {
 <section
   id="hero"
   class="hero min-h-screen bg-cover bg-center flex items-center justify-center text-center relative"
-  style={optimizedImage
-    ? `background-image: url('${optimizedImage.src}');`
+  style={bannerImageUrl
+    ? `background-image: url('${bannerImageUrl}');`
     : "background: linear-gradient(to right, #182416, #2d3b28);"}
 >
   <div

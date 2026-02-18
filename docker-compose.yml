@@ -21,23 +21,32 @@ services:
       context: ./api
       dockerfile: Dockerfile
     restart: unless-stopped
-    env_file: .env
     environment:
+      HOST: 0.0.0.0
+      PORT: 1337
+      NODE_ENV: production
       DATABASE_CLIENT: postgres
       DATABASE_HOST: postgres
       DATABASE_PORT: 5432
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USERNAME: ${DATABASE_USERNAME}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_SSL: "false"
+      STRAPI_PUBLIC_URL: ${STRAPI_PUBLIC_URL:-https://${API_DOMAIN}}
+      STRAPI_TRUST_PROXY: ${STRAPI_TRUST_PROXY:-true}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      CORS_ALLOWED_METHODS: ${CORS_ALLOWED_METHODS:-GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS}
+      CORS_ALLOWED_HEADERS: ${CORS_ALLOWED_HEADERS:-Content-Type,Authorization,Origin,Accept}
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
       API_TOKEN_SALT: ${API_TOKEN_SALT}
       TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
       APP_KEYS: ${APP_KEYS}
-      NODE_ENV: production
       SENDGRID_API_KEY: ${SENDGRID_API_KEY}
     volumes:
       - strapi-uploads:/opt/app/public/uploads
+    expose:
+      - "1337"
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:1337/_health"]
       interval: 30s
@@ -50,39 +59,30 @@ services:
     networks:
       - internal
 
-  astro:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-      args:
-        PUBLIC_API_URL: ${PUBLIC_API_URL}
-        PUBLIC_IMAGE_URL: ${PUBLIC_IMAGE_URL}
-        PUBLIC_SITE_URL: ${PUBLIC_SITE_URL}
+  caddy:
+    image: caddy:2.8-alpine
     restart: unless-stopped
     environment:
-      PUBLIC_API_URL: http://strapi:1337
-      PUBLIC_IMAGE_URL: ${PUBLIC_IMAGE_URL}
-      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL}
+      API_DOMAIN: ${API_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
     depends_on:
-      - strapi
-    networks:
-      - internal
-
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    restart: unless-stopped
-    command: tunnel --no-autoupdate run
-    environment:
-      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
-    depends_on:
-      - astro
-      - strapi
+      strapi:
+        condition: service_healthy
     networks:
       - internal
 
 volumes:
   postgres-data:
   strapi-uploads:
+  caddy-data:
+  caddy-config:
 
 networks:
   internal:

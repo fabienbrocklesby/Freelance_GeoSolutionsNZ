@@ -1,2 +1,1 @@
-export const BASE_URL =
-	process.env.PUBLIC_BACKEND_BASE_URL ?? process.env.PUBLIC_BACKEND_BASE_URL;
+export const BASE_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:1337";

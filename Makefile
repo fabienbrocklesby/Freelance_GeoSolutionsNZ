@@ -1,144 +1,180 @@
-# GeoSolutions Makefile
-# Development and production helpers for Docker Compose
+SHELL := /bin/bash
 
-.PHONY: help dev-up dev-down dev-logs dev-logs-astro dev-logs-strapi dev-rebuild dev-reset \
-        prod-up prod-down prod-logs prod-rebuild db-seed dev-up-seed db-export db-import
+.PHONY: help local-install local-db-up local-db-down local-db-logs local-db-ps local-db-shell local-db-reset \
+	local-api local-client local-dev local-stop \
+	vps-up vps-down vps-logs vps-ps vps-rebuild vps-deploy-main \
+	backup-r2 install-backup-cron \
+	prod-up prod-down prod-logs prod-ps prod-rebuild \
+	migrate-export migrate-export-local migrate-export-prod \
+	migrate-import-dry migrate-import migrate-import-local-dry migrate-import-local migrate-import-prod-dry migrate-import-prod migrate-import-prod-once
 
-# Default target
 help:
-	@echo "GeoSolutions - Development & Production Commands"
+	@echo "GeoSolutions commands"
 	@echo ""
-	@echo "Development (hot reload):"
-	@echo "  make dev-up          Start dev environment with hot reload"
-	@echo "  make dev-up-seed     Start dev environment and auto-seed sample data"
-	@echo "  make dev-down        Stop dev environment"
-	@echo "  make dev-logs        Follow all dev logs"
-	@echo "  make dev-logs-astro  Follow Astro dev logs"
-	@echo "  make dev-logs-strapi Follow Strapi dev logs"
-	@echo "  make dev-rebuild     Rebuild dev containers (no cache)"
-	@echo "  make dev-reset       Stop dev and remove volumes (fresh start)"
-	@echo "  make dev-ps          Show dev container status"
+	@echo "Local development (host frontend + host backend + Docker Postgres):"
+	@echo "  make local-install   Install dependencies for api and client"
+	@echo "  make local-db-up     Start local Postgres container"
+	@echo "  make local-db-down   Stop local Postgres container"
+	@echo "  make local-db-logs   Follow local Postgres logs"
+	@echo "  make local-db-ps     Show local Postgres status"
+	@echo "  make local-db-shell  Open psql shell in local Postgres container"
+	@echo "  make local-db-reset  Remove local Postgres volume"
+	@echo "  make local-api       Run Strapi on host (loads .env.development)"
+	@echo "  make local-client    Run Astro on host"
+	@echo "  make local-dev       Start local Postgres then run Strapi + Astro on host"
+	@echo "  make local-stop      Stop local Postgres"
 	@echo ""
-	@echo "Database:"
-	@echo "  make db-seed         Seed database with sample data"
-	@echo "  make db-export       Export current data for seeding"
-	@echo "  make db-import       Import seed data into Strapi"
-	@echo "  make db-backup       Backup PostgreSQL database"
-	@echo "  make db-shell        Open PostgreSQL shell"
+	@echo "VPS production (Strapi + Postgres + Caddy):"
+	@echo "  make vps-up          Build and start VPS stack"
+	@echo "  make vps-down        Stop VPS stack"
+	@echo "  make vps-logs        Follow VPS logs"
+	@echo "  make vps-ps          Show VPS stack status"
+	@echo "  make vps-rebuild     Rebuild VPS images and restart"
+	@echo "  make vps-deploy-main Pull latest main branch on VPS and deploy"
+	@echo "  make backup-r2       Backup Postgres + uploads to Cloudflare R2"
+	@echo "  make install-backup-cron Install daily cron job for backups"
 	@echo ""
-	@echo "Production:"
-	@echo "  make prod-up         Start production environment"
-	@echo "  make prod-down       Stop production environment"
-	@echo "  make prod-logs       Follow production logs"
-	@echo "  make prod-rebuild    Rebuild production containers (no cache)"
-	@echo "  make prod-ps         Show production container status"
+	@echo "Backward-compatible aliases:"
+	@echo "  make prod-up|prod-down|prod-logs|prod-ps|prod-rebuild"
 	@echo ""
-	@echo "URLs:"
-	@echo "  Astro:        http://localhost:4321"
-	@echo "  Strapi Admin: http://localhost:1337/admin"
-	@echo "  Strapi API:   http://localhost:1337/api"
+	@echo "Legacy migration (export from old site + import to new Strapi):"
+	@echo "  make migrate-export-local     Export legacy data using .env.development"
+	@echo "  make migrate-export-prod      Export legacy data using .env.vps"
+	@echo "  make migrate-import-local-dry Dry-run import into local Strapi"
+	@echo "  make migrate-import-local     Import into local Strapi"
+	@echo "  make migrate-import-prod-dry  Dry-run import into production Strapi"
+	@echo "  make migrate-import-prod      Import into production Strapi"
+	@echo "  make migrate-import-prod-once Import into production Strapi only once (guarded)"
+	@echo "  make migrate-export           Alias of migrate-export-local"
+	@echo "  make migrate-import-dry       Alias of migrate-import-local-dry"
+	@echo "  make migrate-import           Alias of migrate-import-local"
 
-# =====================
-# Development Commands
-# =====================
+local-install:
+	cd api && npm install
+	cd client && npm install
 
-dev-up:
-	docker compose -f docker-compose.dev.yml up -d --build
-	@echo ""
-	@echo "✓ Dev environment starting..."
-	@echo "  Astro:        http://localhost:4321"
-	@echo "  Strapi Admin: http://localhost:1337/admin"
-	@echo ""
-	@echo "Run 'make dev-logs' to follow logs"
+local-db-up:
+	docker compose --env-file .env.development -f docker-compose.dev.yml up -d postgres
 
-dev-down:
-	docker compose -f docker-compose.dev.yml down
+local-db-down:
+	docker compose --env-file .env.development -f docker-compose.dev.yml down
 
-dev-logs:
-	docker compose -f docker-compose.dev.yml logs -f
+local-db-logs:
+	docker compose --env-file .env.development -f docker-compose.dev.yml logs -f postgres
 
-dev-logs-astro:
-	docker compose -f docker-compose.dev.yml logs -f astro
+local-db-ps:
+	docker compose --env-file .env.development -f docker-compose.dev.yml ps
 
-dev-logs-strapi:
-	docker compose -f docker-compose.dev.yml logs -f strapi
+local-db-shell:
+	docker compose --env-file .env.development -f docker-compose.dev.yml exec postgres psql -U $${DATABASE_USERNAME:-strapi} -d $${DATABASE_NAME:-strapi}
 
-dev-rebuild:
-	docker compose -f docker-compose.dev.yml build --no-cache
-	docker compose -f docker-compose.dev.yml up -d
+local-db-reset:
+	docker compose --env-file .env.development -f docker-compose.dev.yml down -v
 
-dev-reset:
-	docker compose -f docker-compose.dev.yml down -v
-	@echo "✓ Dev volumes removed. Run 'make dev-up' for fresh start."
+local-api:
+	@set -a; source .env.development; set +a; cd api && npm run develop
 
-dev-ps:
-	docker compose -f docker-compose.dev.yml ps
+local-client:
+	cd client && npm run dev -- --host 0.0.0.0 --port 4321
 
-dev-shell-strapi:
-	docker compose -f docker-compose.dev.yml exec strapi sh
+local-dev:
+	./scripts/local-dev.sh
 
-dev-shell-astro:
-	docker compose -f docker-compose.dev.yml exec astro sh
+local-stop:
+	docker compose --env-file .env.development -f docker-compose.dev.yml down
 
-# =====================
-# Production Commands
-# =====================
+vps-up:
+	./scripts/vps-up.sh
 
-prod-up:
-	docker compose up -d --build
+vps-down:
+	./scripts/vps-down.sh
 
-prod-down:
-	docker compose down
+vps-logs:
+	./scripts/vps-logs.sh
 
-prod-logs:
-	docker compose logs -f
+vps-ps:
+	docker compose --env-file .env.vps -f docker-compose.yml ps
 
-prod-rebuild:
-	docker compose build --no-cache
-	docker compose up -d
+vps-rebuild:
+	docker compose --env-file .env.vps -f docker-compose.yml build --no-cache
+	docker compose --env-file .env.vps -f docker-compose.yml up -d
 
-prod-ps:
-	docker compose ps
+vps-deploy-main:
+	./scripts/vps-deploy-main.sh
 
-# =====================
-# Database Commands
-# =====================
+backup-r2:
+	./scripts/backup-postgres-to-r2.sh
 
-db-backup:
-	@mkdir -p backups
-	docker compose -f docker-compose.dev.yml exec postgres pg_dump -U strapi strapi > backups/backup-$$(date +%Y%m%d-%H%M%S).sql
-	@echo "✓ Database backed up to backups/"
+install-backup-cron:
+	./scripts/install-backup-cron.sh
 
-db-shell:
-	docker compose -f docker-compose.dev.yml exec postgres psql -U strapi -d strapi
+prod-up: vps-up
+prod-down: vps-down
+prod-logs: vps-logs
+prod-ps: vps-ps
+prod-rebuild: vps-rebuild
 
-# Seed the database with sample data (for development)
-db-seed:
-	@echo "🌱 Seeding database with sample data..."
-	docker compose -f docker-compose.dev.yml exec -e SEED_DATABASE=true strapi node scripts/seed.js
-	@echo ""
-	@echo "✓ Database seeded! Next steps:"
-	@echo "  1. Go to Strapi Admin: http://localhost:1337/admin"
-	@echo "  2. Upload images for Hero, Team members, and Projects"
-	@echo "  3. Refresh the frontend: http://localhost:4321"
+migrate-export-local:
+	@set -a; [ -f .env ] && source .env; [ -f .env.development ] && source .env.development; set +a; \
+	node scripts/export-legacy-site.mjs \
+		--base-url "$${LEGACY_SITE_URL:-https://geosolutions.nz}" \
+		--out-dir "$${MIGRATION_OUTPUT_DIR:-migration-output/legacy-site-export}" \
+		--page-size "$${MIGRATION_PAGE_SIZE:-100}" \
+		--timeout-ms "$${MIGRATION_TIMEOUT_MS:-30000}" \
+		$${MIGRATION_EXPORT_ARGS:-}
 
-# Start dev environment with auto-seeding enabled
-dev-up-seed:
-	SEED_DATABASE=true docker compose -f docker-compose.dev.yml up -d --build
-	@echo ""
-	@echo "✓ Dev environment starting with auto-seed enabled..."
-	@echo "  Astro:        http://localhost:4321"
-	@echo "  Strapi Admin: http://localhost:1337/admin"
-	@echo ""
-	@echo "Run 'make dev-logs' to follow logs"
+migrate-export-prod:
+	@set -a; [ -f .env ] && source .env; [ -f .env.vps ] && source .env.vps; set +a; \
+	node scripts/export-legacy-site.mjs \
+		--base-url "$${LEGACY_SITE_URL:-https://geosolutions.nz}" \
+		--out-dir "$${MIGRATION_OUTPUT_DIR:-migration-output/legacy-site-export}" \
+		--page-size "$${MIGRATION_PAGE_SIZE:-100}" \
+		--timeout-ms "$${MIGRATION_TIMEOUT_MS:-30000}" \
+		$${MIGRATION_EXPORT_ARGS:-}
 
-# Export current Strapi data for seeding (requires strapi-plugin-import-export-entries)
-db-export:
-	@mkdir -p api/data/seed
-	docker compose -f docker-compose.dev.yml exec strapi npm run strapi export -- --no-encrypt -f /opt/app/data/seed/export
-	@echo "✓ Data exported to api/data/seed/"
+migrate-import-local-dry:
+	@set -a; [ -f .env ] && source .env; [ -f .env.development ] && source .env.development; set +a; \
+	MIG_SEED="$${MIGRATION_SEED_PATH:-$${MIGRATION_OUTPUT_DIR:-migration-output/legacy-site-export}/strapi-seed.legacy.json}"; \
+	node scripts/import-legacy-to-strapi.mjs \
+		--seed "$$MIG_SEED" \
+		--strapi-url "$${MIGRATION_STRAPI_URL:-$${STRAPI_PUBLIC_URL:-http://localhost:1337}}" \
+		--timeout-ms "$${MIGRATION_TIMEOUT_MS:-30000}" \
+		--dry-run \
+		$${MIGRATION_IMPORT_ARGS:-}
 
-# Import seed data into Strapi
-db-import:
-	docker compose -f docker-compose.dev.yml exec strapi npm run strapi import -- -f /opt/app/data/seed/export.tar.gz
-	@echo "✓ Data imported from api/data/seed/"
+migrate-import-local:
+	@set -a; [ -f .env ] && source .env; [ -f .env.development ] && source .env.development; set +a; \
+	MIG_SEED="$${MIGRATION_SEED_PATH:-$${MIGRATION_OUTPUT_DIR:-migration-output/legacy-site-export}/strapi-seed.legacy.json}"; \
+	node scripts/import-legacy-to-strapi.mjs \
+		--seed "$$MIG_SEED" \
+		--strapi-url "$${MIGRATION_STRAPI_URL:-$${STRAPI_PUBLIC_URL:-http://localhost:1337}}" \
+		--token "$${MIGRATION_STRAPI_TOKEN:-$${STRAPI_API_TOKEN:-}}" \
+		--timeout-ms "$${MIGRATION_TIMEOUT_MS:-30000}" \
+		$${MIGRATION_IMPORT_ARGS:-}
+
+migrate-import-prod-dry:
+	@set -a; [ -f .env ] && source .env; [ -f .env.vps ] && source .env.vps; set +a; \
+	MIG_SEED="$${MIGRATION_SEED_PATH:-$${MIGRATION_OUTPUT_DIR:-migration-output/legacy-site-export}/strapi-seed.legacy.json}"; \
+	node scripts/import-legacy-to-strapi.mjs \
+		--seed "$$MIG_SEED" \
+		--strapi-url "$${MIGRATION_STRAPI_URL:-$${STRAPI_PUBLIC_URL:-http://localhost:1337}}" \
+		--timeout-ms "$${MIGRATION_TIMEOUT_MS:-30000}" \
+		--dry-run \
+		$${MIGRATION_IMPORT_ARGS:-}
+
+migrate-import-prod:
+	@set -a; [ -f .env ] && source .env; [ -f .env.vps ] && source .env.vps; set +a; \
+	MIG_SEED="$${MIGRATION_SEED_PATH:-$${MIGRATION_OUTPUT_DIR:-migration-output/legacy-site-export}/strapi-seed.legacy.json}"; \
+	node scripts/import-legacy-to-strapi.mjs \
+		--seed "$$MIG_SEED" \
+		--strapi-url "$${MIGRATION_STRAPI_URL:-$${STRAPI_PUBLIC_URL:-http://localhost:1337}}" \
+		--token "$${MIGRATION_STRAPI_TOKEN:-$${STRAPI_API_TOKEN:-}}" \
+		--timeout-ms "$${MIGRATION_TIMEOUT_MS:-30000}" \
+		$${MIGRATION_IMPORT_ARGS:-}
+
+migrate-import-prod-once:
+	./scripts/migrate-import-prod-once.sh
+
+migrate-export: migrate-export-local
+migrate-import-dry: migrate-import-local-dry
+migrate-import: migrate-import-local

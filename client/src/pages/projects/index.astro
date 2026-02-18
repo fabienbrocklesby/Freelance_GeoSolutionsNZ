@@ -1,22 +1,19 @@
 ---
 import Layout from "../../layouts/DefaultLayout.astro";
+import { fetchAPI, getImageUrl } from "../../lib/api.js";
 
-const apiUrl = process.env.PUBLIC_API_URL;
-const imageUrl = process.env.PUBLIC_IMAGE_URL;
-const response = await fetch(
-	`${apiUrl}/api/projects?populate=thumbnail,beforePhoto,afterPhoto`
-);
-const { data } = await response.json();
+const result = await fetchAPI("projects?populate=thumbnail,beforePhoto,afterPhoto");
+const projectsData = result?.data ?? [];
 
-let projects = data.map((project) => ({
+let projects = projectsData.map((project) => ({
 	id: project.id,
 	title: project.attributes.title,
 	description: project.attributes.description,
-	thumbnailUrl: project.attributes.thumbnail.data.attributes.url,
+	thumbnailUrl: getImageUrl(project.attributes.thumbnail?.data?.attributes?.url),
 	startDate: project.attributes.startDate,
 	endDate: project.attributes.endDate,
-	beforePhotoUrl: project.attributes.beforePhoto.data.attributes.url,
-	afterPhotoUrl: project.attributes.afterPhoto.data.attributes.url,
+	beforePhotoUrl: getImageUrl(project.attributes.beforePhoto?.data?.attributes?.url),
+	afterPhotoUrl: getImageUrl(project.attributes.afterPhoto?.data?.attributes?.url),
 }));
 
 projects = projects.sort(
@@ -49,11 +46,11 @@ projects = projects.sort(
 								class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300 h-full flex flex-col"
 							>
 								<figure class="relative h-48 overflow-hidden">
-									<img
-										src={imageUrl + project.thumbnailUrl}
-										alt={project.title}
-										class="w-full h-full object-cover"
-									/>
+										<img
+											src={project.thumbnailUrl}
+											alt={project.title}
+											class="w-full h-full object-cover"
+										/>
 								</figure>
 								<div class="card-body p-6 flex-grow">
 									<h2 class="card-title text-xl font-semibold text-primary mb-2">
@@ -69,7 +66,7 @@ projects = projects.sort(
 										<div class="w-1/2 flex flex-col">
 											<div class="h-32 overflow-hidden rounded-lg">
 												<img
-													src={imageUrl + project.beforePhotoUrl}
+													src={project.beforePhotoUrl}
 													alt="Before"
 													class="w-full h-full object-cover"
 												/>
@@ -81,7 +78,7 @@ projects = projects.sort(
 										<div class="w-1/2 flex flex-col">
 											<div class="h-32 overflow-hidden rounded-lg">
 												<img
-													src={imageUrl + project.afterPhotoUrl}
+													src={project.afterPhotoUrl}
 													alt="After"
 													class="w-full h-full object-cover"
 												/>

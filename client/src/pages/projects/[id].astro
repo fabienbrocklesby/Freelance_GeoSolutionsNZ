@@ -1,19 +1,21 @@
 ---
 import Layout from "../../layouts/DefaultLayout.astro";
 import { marked } from "marked";
+import { fetchAPI, getImageUrl } from "../../lib/api.js";
 
 const { id } = Astro.params;
-const apiUrl = process.env.PUBLIC_API_URL;
-const imageUrl = process.env.PUBLIC_IMAGE_URL;
-const response = await fetch(
-  `${apiUrl}/api/projects/${id}?populate=thumbnail,beforePhoto,afterPhoto,seo,seo.ogImage`,
+const result = await fetchAPI(
+  `projects/${id}?populate=thumbnail,beforePhoto,afterPhoto,seo,seo.ogImage`
 );
-const { data } = await response.json();
-const { attributes: project } = data;
+const project = result?.data?.attributes;
+
+if (!project) {
+  return Astro.redirect("/projects");
+}
 
 const seo = project.seo || {};
 const ogImage = seo.ogImage?.data?.attributes?.url
-  ? imageUrl + seo.ogImage.data.attributes.url
+  ? getImageUrl(seo.ogImage.data.attributes.url)
   : null;
 
 const description = project.description
@@ -22,9 +24,8 @@ const description = project.description
 ---
 
 <Layout
-  title={project.title}
-  metaTitle={seo.metaTitle}
-  metaDescription={seo.metaDescription}
+  title={seo.metaTitle || project.title}
+  description={seo.metaDescription}
   ogImage={ogImage}
 >
   <div
@@ -39,7 +40,7 @@ const description = project.description
 
         <div class="bg-base-100 shadow-xl rounded-lg overflow-hidden mb-8">
           <img
-            src={imageUrl + project.thumbnail.data.attributes.url}
+            src={getImageUrl(project.thumbnail?.data?.attributes?.url)}
             alt={project.title}
             class="w-full h-auto object-cover"
           />
@@ -63,7 +64,7 @@ const description = project.description
             <div class="flex-1">
               <div class="rounded-lg overflow-hidden mb-2">
                 <img
-                  src={imageUrl + project.beforePhoto.data.attributes.url}
+                  src={getImageUrl(project.beforePhoto?.data?.attributes?.url)}
                   alt="Before"
                   class="w-full h-64 object-cover"
                 />
@@ -73,7 +74,7 @@ const description = project.description
             <div class="flex-1">
               <div class="rounded-lg overflow-hidden mb-2">
                 <img
-                  src={imageUrl + project.afterPhoto.data.attributes.url}
+                  src={getImageUrl(project.afterPhoto?.data?.attributes?.url)}
                   alt="After"
                   class="w-full h-64 object-cover"
                 />

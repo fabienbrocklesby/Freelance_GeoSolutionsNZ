@@ -1,22 +1,14 @@
 ---
+import { fetchAPI } from "../lib/api.js";
+
 const currentYear = new Date().getFullYear();
 const fallbackTagline =
   "Our focus is on the private sector market in the communities in and around the top of the South Island, New Zealand. (Nelson Tasman)";
 
 let footerTagline = fallbackTagline;
-
-try {
-  const response = await fetch(
-    `${import.meta.env.PUBLIC_API_URL}/api/site-setting`,
-  );
-  if (response.ok) {
-    const data = await response.json();
-    if (data?.data?.attributes?.footerTagline) {
-      footerTagline = data.data.attributes.footerTagline;
-    }
-  }
-} catch (error) {
-  console.error("Failed to fetch site settings:", error);
+const data = await fetchAPI("site-setting");
+if (data?.data?.attributes?.footerTagline) {
+  footerTagline = data.data.attributes.footerTagline;
 }
 ---
 
