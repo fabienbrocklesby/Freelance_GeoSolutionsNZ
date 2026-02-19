@@ -14,12 +14,12 @@
     "@strapi/plugin-cloud": "4.25.5",
     "@strapi/plugin-i18n": "4.25.5",
     "@strapi/plugin-users-permissions": "4.25.5",
-    "strapi-provider-email-resend": "^1.0.3",
     "@strapi/strapi": "4.25.5",
     "pg": "8.8.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "5.3.4",
+    "resend": "^6.9.2",
     "strapi-plugin-import-export-entries": "^1.23.1",
     "styled-components": "5.3.3"
   },
