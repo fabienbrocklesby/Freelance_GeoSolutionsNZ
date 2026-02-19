@@ -1,28 +1,27 @@
 /**
  * Custom Resend email provider using the official SDK.
- * Replaces the flaky community strapi-provider-email-resend package.
+ * Completely replaces the built-in email provider at bootstrap.
  */
 const { Resend } = require("resend");
 
 module.exports = (plugin) => {
-  const originalBootstrap = plugin.bootstrap;
-
   plugin.bootstrap = async ({ strapi }) => {
-    if (originalBootstrap) {
-      await originalBootstrap({ strapi });
-    }
-
     const apiKey = strapi.config.get("plugin.email.config.providerOptions.apiKey");
     const settings = strapi.config.get("plugin.email.config.settings", {});
 
     if (!apiKey) {
       strapi.log.warn("[email] RESEND_API_KEY is not set — emails will not be sent.");
+      // Set a no-op provider so Strapi doesn't crash
+      strapi.plugin("email").provider = {
+        send: async () => {
+          strapi.log.warn("[email] Skipped — no API key configured.");
+        },
+      };
       return;
     }
 
     const resend = new Resend(apiKey);
 
-    // Override the email provider's send function
     strapi.plugin("email").provider = {
       send: async (options) => {
         const { from, to, subject, text, html, replyTo, cc, bcc } = options;
